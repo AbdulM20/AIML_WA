@@ -1,5 +1,7 @@
 Student Name: Abdul M
+
 Assignment: Web Authoring Assignment 1
+
 Date: 18.02.2026
 
 ### 1. Portfolio Purpose and Audience
