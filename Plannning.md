@@ -27,7 +27,8 @@ The header will include:
 I am a Machine Learning student with a strong interest in quantitative analysis and data-driven problem solving. My work focuses on building models, understanding data patterns, and improving predictive accuracy. This portfolio showcases four key projects that demonstrate my learning progress and technical skills.
 
 ### Projects section:
-will present the four projects using a card-based grid layout (2x2 on desktop, stacked vertically on mobile).
+
+Will present the four projects using a card-based grid layout (2x2 on desktop, stacked vertically on mobile).
 
 Each project card will include:
 
@@ -63,27 +64,36 @@ I plan to include a Skills section listing:
 - Data visualization
 
 # 3. Design Decisions 
-## Colour Scheme 
 
-Primary colour : Navy Blue #1B263B
-Secondary colour : Light Gray #E0E1DD
-Accent colour : Teal #00B4D8
-Background colour : Off - white #F8F9FA
-Text colour : Dark gray #212529
+### Colour Scheme 
+
+- Primary colour : Navy Blue #1B263B
+
+- Secondary colour : Light Gray #E0E1DD
+
+- Accent colour : Teal #00B4D8
+
+- Background colour : Off - white #F8F9FA
+
+- Text colour : Dark gray #212529
 
 ### Why did I choose these colours 
 
-Navy Blue creates a professional and trustworthy impression and also aligns with my technological theme, the teal accent adds a modern, innovative feel without being overhelming. The light background and dark text provide strong contrast for readability.
+Navy Blue creates a professional and trustworthy impression and also aligns with my technological theme
 
-colour scheme source : Coolors.co 
+The teal accent adds a modern, innovative feel without being overhelming.
+
+The light background and dark text provide strong contrast for readability.
+
+Colour scheme source : Coolors.co 
 
 ### Typography 
 
-Heading font : Poppins, sans serif 
+- Heading font : Poppins, sans serif 
 
-Body text font : Open Sans, sans serif
+- Body text font : Open Sans, sans serif
 
-Am I using web fonts -  Yes, from Google fonts 
+- Am I using web fonts -  Yes, from Google fonts 
 
 Why did i choose these fonts? 
 
@@ -131,61 +141,68 @@ Why this navigation structure?
 It is simple and predictable. Users immediately see the available pages without confusion. Clear labelling makes navigation intuitive. 
 
 # 5. Wireframes 
-## Desktop Wireframe:
+### Desktop Wireframe:
 
-See: Hand drawing 
+**See**: Hand drawing 
 
 layout structure: 
 - Header (name + nav)
-- intro section
-- project grid (2x2)
-- skills section
-- footer
+- Intro section
+- Project grid (2x2)
+- Skills section
+- Footer
 
-## Wirefame Annotations 
+### Wirefame Annotations 
 
-header Area : 
+**Header Area** : 
 
 Name on the left, navigation on the right 
 
-Main content area:
+**Main content area**:
 
 Intro → Projects → Skills.
 
-Projects section:
+**Projects section**:
 
 Four rectangular cards evenly spaced.
 
-Footer area:
+**Footer area**:
 
 Centered text, simple layout.
 
-Responsive considerations:
+**Responsive considerations**:
 
 On smaller screens, grid becomes single column and spacing reduces slightly.
 
-# 6. technologies and Tools 
+# 6. Technologies and Tools 
+
 Text editor : Webstorm 
-browser for testing : safari 
-version control : github 
-wirframing tool : Hand drawn 
-colour selection tool: Coolors.co 
+
+Browser for testing : safari
+
+Version control : github
+
+Wireframing tool : Hand drawn
+
+Colour selection tool: Coolors.co 
 
 Why these tools?
 
-webstorm is efficient and widely used in industry. GitHub allows version control and professional project tracking. Safari developer tools help inspect layout and debug CSS effectively.
+- webstorm is efficient and widely used in industry. 
+- GitHub allows version control and professional project tracking.
+- Safari developer tools help inspect layout and debug CSS effectively.
 
 # 7.HTML Elements you plan to use 
 
-Element 1: < header > 
+**Element 1: < header >**
 
-purpose: Represents introductory content or navigation 
+Purpose: Represents introductory content or navigation 
 
-use: Contains my name and navigation menu
+Use: Contains my name and navigation menu
 
-why Appropriate : improves accesibilty and semantic clarity 
+Why appropriate : improves accesibilty and semantic clarity 
 
-Element 2: < nav >
+**Element 2: < nav >**
 
 Purpose: Defines navigation links.
 
@@ -193,7 +210,7 @@ Use: Wraps the main menu links.
 
 Why appropriate: Improves accessibility and semantic clarity.
 
-Element 3: < section >
+**Element 3: < section >**
 
 Purpose: Groups related thematic content.
 
@@ -201,7 +218,7 @@ Use: Separate intro, projects, and skills sections.
 
 Why appropriate: Organizes content logically.
 
-Element 4: < article >
+**Element 4: < article >**
 
 Purpose: Represents independent content items.
 
