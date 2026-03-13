@@ -133,7 +133,7 @@ Links included:
 Active page indicator:
 
 The current page link will have: 
-- different text colour (Teal)
+- Different text colour (Teal)
 - Bottom border highlight
 
 Why this navigation structure?
@@ -160,7 +160,7 @@ Name on the left, navigation on the right
 
 **Main content area**:
 
-Intro → Projects → Skills.
+Intro -> Projects -> Skills.
 
 **Projects section**:
 
@@ -176,19 +176,19 @@ On smaller screens, grid becomes single column and spacing reduces slightly.
 
 # 6. Technologies and Tools 
 
-Text editor : Webstorm 
+- Text editor : Webstorm 
 
-Browser for testing : safari
+- Browser for testing : safari
 
-Version control : github
+- Version control : github
 
-Wireframing tool : Hand drawn
+- Wireframing tool : Hand drawn
 
-Colour selection tool: Coolors.co 
+- Colour selection tool: Coolors.co 
 
 Why these tools?
 
-- webstorm is efficient and widely used in industry. 
+- Webstorm is efficient and widely used in industry.
 - GitHub allows version control and professional project tracking.
 - Safari developer tools help inspect layout and debug CSS effectively.
 
@@ -196,35 +196,35 @@ Why these tools?
 
 **Element 1: < header >**
 
-Purpose: Represents introductory content or navigation 
+*Purpose*: Represents introductory content or navigation 
 
-Use: Contains my name and navigation menu
+*Use*: Contains my name and navigation menu
 
-Why appropriate : improves accesibilty and semantic clarity 
+*Why appropriate* : improves accesibilty and semantic clarity 
 
 **Element 2: < nav >**
 
-Purpose: Defines navigation links.
+*Purpose*: Defines navigation links.
 
-Use: Wraps the main menu links.
+*Use*: Wraps the main menu links.
 
-Why appropriate: Improves accessibility and semantic clarity.
+*Why appropriate*: Improves accessibility and semantic clarity.
 
 **Element 3: < section >**
 
-Purpose: Groups related thematic content.
+*Purpose*: Groups related thematic content.
 
-Use: Separate intro, projects, and skills sections.
+*Use*: Separate intro, projects, and skills sections.
 
-Why appropriate: Organizes content logically.
+*Why appropriate*: Organizes content logically.
 
 **Element 4: < article >**
 
-Purpose: Represents independent content items.
+*Purpose*: Represents independent content items.
 
-Use: Each project card will be inside an < article > 
+*Use*: Each project card will be inside an < article > 
 
-Why appropriate: Each project is self-contained and meaningful on its own.
+*Why appropriate*: Each project is self-contained and meaningful on its own.
 
 # 8. CSS Properties and techniques 
 
@@ -254,17 +254,13 @@ Why chosen: Ensures mobile compatibility.
 
 4. hover effects
 
-what it does: Changes styling when users hovers. 
+What it does: Changes styling when users hovers. 
 
 Use : Buttons and projects cards 
 
 Why chosen: Improves interactivity and feedback. 
 
-# 9. HTML and CSS Evolution 
-
-## HTML evolution 
-
-# 10. Implementation Plan 
+# 9. Implementation Plan 
 
 Step 1: Create basic HTML structure with semantic elements
 
