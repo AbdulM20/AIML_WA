@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Title that shows in the browser tab -->
+  <title>Abdul Mohaimin &mdash; ML Portfolio</title>
+
+  <!-- Linking the shared stylesheet — one CSS file for all pages -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Header — sits at the top of every page
+       I gave it the id="site-header" so I can target it
+       specifically in CSS without affecting other elements -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+
+      <!-- My name as the site logo, links back to homepage -->
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+
+      <!-- Main nav — id="main-nav" lets me style it by ID in CSS
+           aria-label helps screen readers know what this nav is for -->
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
+        <ul>
+          <!-- class="active" highlights whichever page you're currently on -->
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- Main content — everything the user actually reads goes in here
+       id="main-content" is used by the CSS to set a minimum height -->
+  <main id="main-content">
+
+
+    <!-- Intro section — this is the big name + tagline block at the top
+         I used a CSS grid to split it into two columns (name | description) -->
+    <section class="intro-grid container" aria-labelledby="intro-name">
+
+      <!-- The large heading with my name — split across two lines on purpose
+           The <span> wraps my last name so I can colour it differently in CSS -->
+      <h1 id="intro-name" class="intro-name">
+        Abdul<br>
+        <span>Mohaimin</span>
+      </h1>
+
+      <!-- Right side of the intro — my role and a short bio
+           Using <header> here because it introduces this section -->
+      <header class="intro-desc">
+        <span class="label">Machine Learning Student &mdash; Aspiring AI Specialist</span>
+        <p>I am a Machine Learning student with a strong interest in quantitative
+           analysis and data&#8209;driven problem solving. My work focuses on building
+           models, understanding data patterns, and improving predictive accuracy.</p>
+        <p>Dublin, Ireland &middot; Available for placement &amp; mentorship</p>
+      </header>
+
+    </section>
+
+
+    <!-- Skills section — a simple unordered list of what I work with
+         The brief required at least one <ul> so this covers that -->
+    <section class="section" aria-labelledby="skills-heading">
+      <div class="container">
+
+        <span class="label">Core Skills</span>
+        <h2 id="skills-heading"><img src="Images/code-icon.png" alt="Code icon" class="skills-icon">What I Work With</h2>
+        <hr class="rule">
+
+        <!-- Each skill is a list item styled as a tag in CSS -->
+        <ul class="tech-stack">
+          <li class="tag">Python</li>
+          <li class="tag">HTML &amp; CSS</li>
+          <li class="tag">Machine Learning</li>
+          <li class="tag">Data Visualisation</li>
+          <li class="tag">Git &amp; GitHub</li>
+          <li class="tag">Linear Algebra</li>
+        </ul>
+
+      </div>
+    </section>
+
+
+    <!-- Projects section — cards are being added in Assignment 2
+         Leaving this here as a placeholder so the structure is ready -->
+    <section class="section" aria-labelledby="projects-heading">
+      <div class="container">
+
+        <span class="label">Selected Work</span>
+        <h2 id="projects-heading">Projects</h2>
+        <hr class="rule">
+
+        <!-- Temporary message — project pages get linked here in Assignment 2 -->
+        <p>Project documentation pages are currently in development
+           and will be published here shortly. &mdash; &copy; 2026</p>
+
+      </div>
+    </section>
+
+
+  </main>
+
+
+  <!-- Footer — kept simple, just copyright and two links
+       id="site-footer" used for CSS targeting -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+
+      <!-- &copy; is the HTML entity for the © symbol -->
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+
+      <!-- rel="noopener" is a security best practice for links opening in a new tab -->
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+    </div>
+  </footer>
+
+
+</body>
+</html>

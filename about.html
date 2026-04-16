@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>About &mdash; Abdul Mohaimin</title>
+
+  <!-- Same stylesheet as every other page -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Header is the same on every page
+       class="active" moves to whichever link matches the current page -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <!-- This is the about page so this link gets class="active" -->
+          <li><a href="about.html" class="active">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+  <main id="main-content">
+
+
+    <!-- Hero banner at the top of the about page
+         <section> made sense here because it has its own heading
+         and is visually a distinct block from the rest of the page -->
+    <section class="page-hero" aria-labelledby="hero-heading">
+      <div class="container">
+        <span class="label">About</span>
+        <h1 id="hero-heading">Who I Am &amp;<br>What I Do</h1>
+        <p><strong>A brief introduction to my background and approach.</strong></p>
+      </div>
+    </section>
+
+
+    <!-- Main about body — two columns: bio on the left, info on the right
+         The <div class="about-grid"> is just a layout wrapper for the CSS grid,
+         there's no semantic element that means "grid container" so a div is fine here -->
+    <section class="section" aria-label="About body">
+      <div class="container">
+        <div class="about-grid">
+
+
+          <!-- Left column — my biography
+               Using <section> because it has its own heading and stands alone -->
+          <section class="about-bio" aria-labelledby="bio-heading">
+
+            <h2 id="bio-heading">Abdul Mohaimin/<br>Machine Learning Student</h2>
+
+            <!-- My background here — where I'm from, what I study -->
+            <p><strong>Background</strong>:
+              I was born in Saudi Arabia and moved to Ireland at the age of ten, where I have lived ever since.
+              I am currently studying AI and Machine Learning Foundations at Dublin College of Further Education,
+              a Post Leaving Certificate course that has given me my first structured introduction to programming, data
+              and the mathematics behind machine learning</p>
+
+            <!-- how I think and work -->
+            <p><strong>Interests</strong>:
+              Outside my coursework I have developed a strong interest in large language models, how they work,
+              how to get the best out of them and where they can be applied in the real world.
+              I enjoy exploring practical use cases for AI and ML, and I am particularly drawn to the intersection
+              of machine learning and financial markets, with a long term goal of building predictive models for trading.</p>
+
+            <!-- what I'm currently learning -->
+            <p><strong>Direction</strong>:
+              I am at the early stages of my technical journey but I am approaching it seriously.
+              This portfolio documents my progress through the projects on this course and will continue to grow as my skills do.</p>
+
+          </section>
+
+
+          <!-- Right column — supplementary info like skills and contact
+               <aside> is correct here because it's supporting info, not the main content -->
+          <aside aria-label="Key information">
+
+
+            <!-- Skills block -->
+            <section class="info-block" aria-labelledby="skills-heading">
+              <h3 id="skills-heading">Skills</h3>
+              <ul>
+                <li>Python</li>
+                <li>HTML & CSS</li>
+                <li>Machine Learning Fundamentals</li>
+                <li>Data Analysis</li>
+                <li>Prompt Engineering</li>
+              </ul>
+            </section>
+
+
+            <!-- Tools and technologies — languages, frameworks, software I use -->
+            <section class="info-block" aria-labelledby="tools-heading">
+              <h3 id="tools-heading">Tools &amp; Technologies</h3>
+              <ul>
+                <li>Pycharm / WebStorm</li>
+                <li>GitHub</li>
+                <li>Jupyter</li>
+                <li>Microsoft Excel</li>
+              </ul>
+            </section>
+
+
+            <!-- Education — course, college, years -->
+            <section class="info-block" aria-labelledby="education-heading">
+              <h3 id="education-heading">Education</h3>
+              <p>AI & Machine Learning Foundations<br>
+                Dublin College of Further Education<br>
+                2025 – 2026</p>
+            </section>
+
+
+            <!-- Contact links -->
+            <section class="info-block" aria-labelledby="contact-heading">
+              <h3 id="contact-heading">Contact</h3>
+              <ul>
+                <li><a href="mailto:abimo9966@gmail.com">abimo9966@gmail.com</a></li>
+                <li><a href="#">LinkedIn Profile</a></li>
+                <li><a href="#">GitHub Profile</a></li>
+              </ul>
+            </section>
+
+
+          </aside>
+
+        </div><!-- end of the grid wrapper div -->
+      </div>
+    </section>
+
+
+  </main>
+
+
+  <!-- Footer — same on every page -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,775 @@
+/* ============================================================
+   styles.css — shared stylesheet for all pages
+   
+   Design direction: editorial brutalism
+   Black and cream palette, serif headings, monospace body text.
+   Everything is structured and intentional — no decorative clutter.
+   ============================================================ */
+
+
+/* ── 1. CSS VARIABLES ──────────────────────────────────────────
+   I store all the colours, fonts, and spacing here as variables.
+   This way if I want to change something like the accent colour,
+   I only have to change it in one place and it updates everywhere.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+
+  /* Colours */
+  --clr-bg:      #f5f2ec;  /* cream background — easier on the eyes than pure white */
+  --clr-surface: #ffffff;  /* white — used for card backgrounds */
+  --clr-ink:     #111111;  /* near-black for text */
+  --clr-muted:   #666666;  /* grey for secondary text and labels */
+  --clr-border:  #111111;  /* all borders use this colour */
+  --clr-accent:  #c0392b;  /* deep red — used for highlights, labels, active links */
+
+  /* Fonts
+     Playfair Display for big headings — feels editorial and serious
+     IBM Plex Mono for body text — fits the technical/coding theme */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Font size scale — I use rem so it respects the user's browser font settings */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.75rem;
+  --text-2xl:  2.5rem;
+  --text-3xl:  4rem;
+
+  /* Spacing scale — used for padding, margin, and gap throughout */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  8rem;
+
+  /* Max content width — stops lines getting too long on wide screens */
+  --max-width: 1200px;
+
+  /* Shorthand for the border style used everywhere */
+  --border: 2px solid var(--clr-border);
+}
+
+
+/* ── 2. GOOGLE FONTS ────────────────────────────────────────────
+   Loading both fonts in one @import call.
+   ─────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap');
+
+
+/* ── 3. RESET & BASE STYLES ─────────────────────────────────────
+   Browsers add their own margins and padding by default.
+   I zero everything out here so I'm in full control of spacing.
+   ─────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* makes width calculations include padding and border */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* smooth scrolling for any anchor links */
+}
+
+/* body — element selector setting global defaults for every page */
+body {
+  background-color: var(--clr-bg);
+  color: var(--clr-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  text-align: left; /* explicit default — keeps all text left-aligned */
+
+  /* A very subtle noise texture on the background — just adds a
+     bit of depth without needing an actual image file */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ul, ol — removing the default browser bullet points */
+ul, ol {
+  list-style: none;
+}
+
+/* img — prevents images from ever overflowing their containers */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* ── 4. LINK STATES ─────────────────────────────────────────────
+   All four pseudo-classes for links defined here as a base.
+   Individual components like the nav override these as needed.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Default unvisited link */
+a:link {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+/* Link after the user has already visited it */
+a:visited {
+  color: var(--clr-muted);
+  text-decoration: none;
+}
+
+/* Link on hover */
+a:hover {
+  color: var(--clr-accent);
+  text-decoration: underline;
+}
+
+/* Link at the exact moment of being clicked */
+a:active {
+  color: var(--clr-accent);
+  opacity: 0.7;
+}
+
+
+/* ── 5. ID SELECTORS ────────────────────────────────────────────
+   IDs are used on the main landmark elements — the ones that
+   appear exactly once per page. Helps target them specifically.
+   ─────────────────────────────────────────────────────────────── */
+
+/* The site header — sticky so it stays at the top when scrolling */
+#site-header {
+  border-bottom: var(--border);
+  background-color: var(--clr-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100; /* sits above everything else on the page */
+}
+
+/* The main navigation inside the header */
+#main-nav ul {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* The main content area — min-height stops short pages looking broken */
+#main-content {
+  min-height: 60vh;
+}
+
+/* The site footer */
+#site-footer {
+  border-top: var(--border);
+  padding-block: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+
+/* ── 6. LAYOUT UTILITIES ────────────────────────────────────────
+   Reusable classes I use across multiple pages.
+   ─────────────────────────────────────────────────────────────── */
+
+/* .container — centres the content and limits its max width
+   I use this as a wrapper inside most sections */
+.container {
+  max-width: var(--max-width);
+  margin-inline: auto;       /* auto left and right margins = centred */
+  padding-inline: var(--space-md);
+}
+
+/* .section — adds breathing room above and below each section */
+.section {
+  padding-block: var(--space-lg);
+}
+
+/* .label — the small uppercase red tag used to label each section */
+.label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+/* .rule — the heavy horizontal line used as a divider between sections */
+.rule {
+  border: none;
+  border-top: var(--border);
+  margin-block: var(--space-md);
+}
+
+/* .text-center — utility for centring text, used on the contact page */
+.text-center {
+  text-align: center;
+}
+
+
+/* ── 7. HEADER & NAVIGATION ─────────────────────────────────────
+   The inner layout of the header — logo on the left, nav on the right.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Flex row to push logo and nav to opposite ends */
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-sm);
+}
+
+/* The logo / name link */
+.site-logo {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+/* Override the base link states for the logo — always stays dark */
+.site-logo:link,
+.site-logo:visited {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+.site-logo:hover {
+  color: var(--clr-accent);
+  text-decoration: none;
+}
+
+/* Nav links */
+.site-nav a {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  transition: color 0.2s ease;
+}
+
+/* Override base link states inside the nav */
+.site-nav a:link,
+.site-nav a:visited {
+  color: var(--clr-muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+.site-nav a:active {
+  color: var(--clr-accent);
+}
+
+/* The active page link — red with a bottom border underline */
+.site-nav a.active {
+  color: var(--clr-accent);
+  border-bottom: 2px solid var(--clr-accent);
+  padding-bottom: 2px;
+}
+
+
+/* ── 8. FOOTER ──────────────────────────────────────────────────  */
+
+/* Flex row — copyright on the left, links on the right */
+#site-footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* wraps to a new line on small screens */
+  gap: var(--space-sm);
+}
+
+.footer-name {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-md);
+}
+
+/* Footer link states — override the base to keep them muted */
+.footer-links a:link,
+.footer-links a:visited {
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+.footer-links a:active {
+  color: var(--clr-accent);
+}
+
+
+/* ── 9. PAGE HERO ───────────────────────────────────────────────
+   The banner section at the top of About and Contact pages.
+   ─────────────────────────────────────────────────────────────── */
+.page-hero {
+  border-bottom: var(--border);
+  padding-block: var(--space-lg);
+}
+
+/* h1 — element selector setting the base style for all main headings */
+h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Hero h1 specifically — fluid size that scales with the viewport */
+.page-hero h1 {
+  font-size: clamp(2.5rem, 8vw, var(--text-3xl));
+  max-width: 18ch; /* ch = width of the "0" character — limits line length */
+}
+
+.page-hero p {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  max-width: 55ch;
+}
+
+
+/* ── 10. HOMEPAGE — INTRO STRIP ─────────────────────────────────
+   Two-column grid: my name takes up 2/3, the description takes 1/3.
+   ─────────────────────────────────────────────────────────────── */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-lg);
+  align-items: end; /* aligns content to the bottom of each column */
+  padding-block: var(--space-xl);
+  border-bottom: var(--border);
+}
+
+/* The big name heading */
+.intro-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+/* The <span> inside the name — colours just the last name in red */
+.intro-name span {
+  color: var(--clr-accent);
+}
+
+/* Right column — role label and description paragraphs */
+.intro-desc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.intro-desc p {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  line-height: 1.8;
+}
+/* Skills section icon — sits inline next to the heading */
+.skills-icon {
+  display: inline;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* makes the white square appear as a circle */
+  vertical-align: middle;
+  margin-right: var(--space-xs);
+}
+
+/* ── 11. HOMEPAGE — PROJECT GRID ────────────────────────────────
+   The card grid. auto-fill means it creates as many columns as
+   fit, each at least 300px wide. Cards fill the row equally.
+   ─────────────────────────────────────────────────────────────── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0; /* no gap — the borders on the cards create the grid lines */
+}
+
+/* Individual project card */
+.project-card {
+  background-color: var(--clr-surface);
+  border: var(--border); /* full border on all four sides */
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: background-color 0.2s ease;
+  border-radius: 0; /* sharp corners to match the brutalist grid */
+}
+
+/* Hover state — inverts the card colours */
+.project-card:hover {
+  background-color: var(--clr-ink);
+  color: var(--clr-bg);
+}
+
+/* The small "01", "02" index number in the top left of each card */
+.project-card .card-index {
+  font-size: var(--text-xs);
+  color: var(--clr-muted);
+  letter-spacing: 0.1em;
+}
+
+/* h2 — element selector for card titles */
+.project-card h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Card description text */
+.project-card p {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  flex-grow: 1; /* pushes the "View Project" link to the bottom */
+}
+
+.project-card:hover p {
+  color: #aaaaaa;
+}
+
+/* Tech tag list inside a card */
+.project-card .tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+/* Individual tech tag — slight border-radius to soften it slightly */
+.project-card .tech-tag {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* "View Project" link at the bottom of each card */
+.project-card .card-link {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+}
+
+.project-card .card-link:hover,
+.project-card:hover .card-link {
+  color: var(--clr-bg);
+  text-decoration: none;
+}
+
+/* The → arrow is added automatically via CSS so I don't need it in the HTML */
+.project-card .card-link::after {
+  content: '→';
+}
+
+
+/* ── 12. ABOUT PAGE ─────────────────────────────────────────────  */
+
+/* Two-column grid — bio slightly wider than the info column */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+/* Each info block in the aside — skills, tools, education, contact */
+.info-block {
+  border-top: var(--border);
+  padding-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+/* h3 — element selector for info block headings */
+.info-block h3 {
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.info-block p,
+.info-block ul {
+  font-size: var(--text-sm);
+  color: var(--clr-ink);
+}
+
+/* A subtle line between each list item */
+.info-block ul li {
+  padding-block: 4px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* The big heading in the bio column */
+.about-bio h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+}
+
+.about-bio p {
+  font-size: var(--text-base);
+  color: var(--clr-muted);
+  margin-bottom: var(--space-sm);
+  max-width: 60ch;
+}
+
+
+/* ── 13. CONTACT PAGE ───────────────────────────────────────────
+   Form layout and styling.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Same two-column split as the about page */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+/* The form stacks its fields vertically */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Each label + input pair lives in a .form-group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* label — element selector for form labels */
+label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+}
+
+/* input and textarea — element selectors, shared base styles for all fields */
+input,
+textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--clr-ink);
+  background-color: var(--clr-surface);
+  border: var(--border);
+  padding: var(--space-sm);
+  width: 100%;
+  border-radius: 4px; /* slightly rounded corners on inputs to show they're interactive */
+  transition: border-color 0.2s ease;
+}
+
+/* Combination selector — input element + focus pseudo-class
+   Highlights the active field with the accent colour */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--clr-accent);
+}
+
+/* textarea needs to be taller than a regular input */
+textarea {
+  min-height: 150px;
+  resize: vertical; /* lets the user resize it vertically only */
+}
+
+/* .btn — the button style, used on the form and profile links */
+.btn {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-bg);
+  background-color: var(--clr-ink);
+  border: var(--border);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  border-radius: 0; /* sharp corners — keeps it consistent with the card style */
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+a.btn:link,
+a.btn:visited {
+  color: var(--clr-bg);/* Keeps button text cream whether the link has been clicked before or not */
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: var(--clr-accent);
+  border-color: var(--clr-accent);
+  color: var(--clr-surface);
+  text-decoration: none;
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+
+/* ── 14. PROJECT PAGES ──────────────────────────────────────────
+   Layout for neuron.html, language.html etc.
+   Being populated in Assignment 2.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Narrower column for readability — prose is harder to read at full width */
+.project-article {
+  max-width: 800px;
+  margin-inline: auto;
+  padding-block: var(--space-lg);
+}
+
+.project-article h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.project-article p {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  line-height: 1.9;
+  max-width: 65ch;
+  margin-bottom: var(--space-sm);
+}
+
+/* Placeholder boxes show where content needs to be filled in */
+.placeholder-box {
+  border: 2px dashed #cccccc;
+  background-color: #fafafa;
+  padding: var(--space-md);
+  color: #999999;
+  font-size: var(--text-sm);
+  font-style: italic;
+  border-radius: 4px; /* slightly rounded to look different from the structural borders */
+  margin-bottom: var(--space-md);
+}
+
+/* Tech tag list on project pages */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.tech-stack .tag {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: var(--border);
+  padding: 4px 10px;
+  background-color: var(--clr-surface);
+  border-radius: 2px;
+}
+
+/* The ← back to all projects link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  margin-bottom: var(--space-lg);
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+/* The ← arrow added via CSS */
+.back-link::before {
+  content: '←';
+}
+
+
+/* ── 15. RESPONSIVE — MEDIA QUERIES ─────────────────────────────
+   I only override what actually needs to change at each breakpoint.
+   Everything else stays the same.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+
+  /* Intro grid goes to a single column — name above, description below */
+  .intro-grid {
+    grid-template-columns: 1fr;
+    padding-block: var(--space-lg);
+  }
+
+  /* About and contact grids also stack vertically */
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Project grid — one card per row */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Slightly smaller hero heading on tablet */
+  .page-hero h1 {
+    font-size: var(--text-2xl);
+  }
+
+  /* Footer stacks vertically */
+  #site-footer .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+
+  /* Tighter side padding so content doesn't touch the screen edges */
+  .container {
+    padding-inline: var(--space-sm);
+  }
+
+  /* Less gap between nav links so they fit on one line */
+  #main-nav ul {
+    gap: var(--space-sm);
+  }
+}
