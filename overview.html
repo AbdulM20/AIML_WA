@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Overview &mdash; Abdul Mohaimin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-hero" aria-labelledby="overview-hero-heading">
+      <div class="container">
+        <span class="label">Portfolio Overview</span>
+        <h1 id="overview-hero-heading">All Projects &amp;<br>Learning Journey</h1>
+        <p>A table of contents for all four machine learning projects, from a single neuron to a fully modular neural network.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="toc-heading">
+      <div class="container">
+
+        <span class="label">Navigation</span>
+        <h2 id="toc-heading">Table of Contents</h2>
+        <hr class="rule">
+
+        <nav class="overview-nav" aria-label="Project navigation">
+          <ol class="overview-toc">
+            <li>
+              <a href="neuron.html" class="overview-toc-link">
+                <span class="toc-index">01</span>
+                <span class="toc-body">
+                  <span class="toc-title">Artificial Neuron</span>
+                  <span class="toc-desc">ReLU, weighted sum, activation &mdash; the fundamental building block</span>
+                </span>
+                <span class="toc-arrow">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="language.html" class="overview-toc-link">
+                <span class="toc-index">02</span>
+                <span class="toc-body">
+                  <span class="toc-title">Language Detector</span>
+                  <span class="toc-desc">Word length statistics and MSE distance to classify English, Italian, and Portuguese</span>
+                </span>
+                <span class="toc-arrow">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="nn-single.html" class="overview-toc-link">
+                <span class="toc-index">03</span>
+                <span class="toc-body">
+                  <span class="toc-title">Neural Network &mdash; Single Class</span>
+                  <span class="toc-desc">A complete <code>NeuralNetwork</code> class with backpropagation, trained on MNIST digits</span>
+                </span>
+                <span class="toc-arrow">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="nn-multi.html" class="overview-toc-link">
+                <span class="toc-index">04</span>
+                <span class="toc-body">
+                  <span class="toc-title">Neural Network &mdash; Multiple Classes</span>
+                  <span class="toc-desc">Modular OOP redesign with swappable layers and activations, MNIST experiments</span>
+                </span>
+                <span class="toc-arrow">&rarr;</span>
+              </a>
+            </li>
+          </ol>
+        </nav>
+
+      </div>
+    </section>
+
+    <!-- Project summaries -->
+    <section class="section" aria-labelledby="summaries-heading">
+      <div class="container">
+
+        <span class="label">Project Summaries</span>
+        <h2 id="summaries-heading">What Each Project Covers</h2>
+        <hr class="rule">
+
+        <div class="overview-grid">
+
+          <article class="overview-card" aria-labelledby="sum1-heading">
+            <span class="label">01</span>
+            <h3 id="sum1-heading"><a href="neuron.html">Artificial Neuron</a></h3>
+            <p>
+              The starting point of the course. Three functions building from the ground up:
+              a ReLU activation, a weighted sum, and an activated neuron combining both.
+              Demonstrates why activation functions are necessary and how a neuron &ldquo;fires.&rdquo;
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Python</li>
+              <li class="tag">ReLU</li>
+              <li class="tag">Weighted Sum</li>
+            </ul>
+          </article>
+
+          <article class="overview-card" aria-labelledby="sum2-heading">
+            <span class="label">02</span>
+            <h3 id="sum2-heading"><a href="language.html">Language Detector</a></h3>
+            <p>
+              A statistical classifier that identifies language from word length distributions alone.
+              Implements two distance methods &mdash; basic statistics and Mean Squared Error &mdash; and
+              compares their effectiveness. Requires a minimum of 500 characters for reliable results.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Python</li>
+              <li class="tag">Statistics</li>
+              <li class="tag">MSE</li>
+              <li class="tag">Classification</li>
+            </ul>
+          </article>
+
+          <article class="overview-card" aria-labelledby="sum3-heading">
+            <span class="label">03</span>
+            <h3 id="sum3-heading"><a href="nn-single.html">Neural Network &mdash; Single Class</a></h3>
+            <p>
+              A complete neural network in a single class. Forward pass, cross-entropy loss, and
+              backpropagation all written from first principles. Three architectures compared on
+              MNIST: tiny (6,370 params), medium (52,650), and large (535,818). The large network
+              overfits; medium offers the best real-world balance.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Python</li>
+              <li class="tag">Backpropagation</li>
+              <li class="tag">MNIST</li>
+              <li class="tag">Softmax</li>
+            </ul>
+          </article>
+
+          <article class="overview-card" aria-labelledby="sum4-heading">
+            <span class="label">04</span>
+            <h3 id="sum4-heading"><a href="nn-multi.html">Neural Network &mdash; Multiple Classes</a></h3>
+            <p>
+              A full OOP redesign of the neural network. Separate classes for layers, activations,
+              and output functions, all connected through a shared <code>forward()</code> interface.
+              Two architectures (64 and 128 hidden nodes) trained on 2,000 MNIST examples,
+              reaching 89.7% and 90.7% test accuracy respectively.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Python</li>
+              <li class="tag">OOP</li>
+              <li class="tag">Inheritance</li>
+              <li class="tag">MNIST</li>
+            </ul>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="section" aria-labelledby="timeline-heading">
+      <div class="container">
+
+        <span class="label">Progression</span>
+        <h2 id="timeline-heading">Timeline &amp; Progression</h2>
+        <hr class="rule">
+
+        <table class="doc-table" aria-label="Project timeline">
+          <caption>Skills demo timeline and key concepts introduced</caption>
+          <thead>
+            <tr>
+              <th scope="col">Project</th>
+              <th scope="col">Module</th>
+              <th scope="col">Key Concept Introduced</th>
+              <th scope="col">Built On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Artificial Neuron</td>
+              <td>CM 5N0554</td>
+              <td>ReLU, weighted sum, activation</td>
+              <td>&mdash; Starting point</td>
+            </tr>
+            <tr>
+              <td>Language Detector</td>
+              <td>PDP 5N2927</td>
+              <td>Statistical distance, MSE, classification</td>
+              <td>Functions, data structures</td>
+            </tr>
+            <tr>
+              <td>Neural Network &mdash; Single</td>
+              <td>CM 5N0554</td>
+              <td>Backpropagation, training loop, loss</td>
+              <td>Artificial Neuron</td>
+            </tr>
+            <tr>
+              <td>Neural Network &mdash; Multi</td>
+              <td>CM 5N0554 &amp; MIT 5N18396</td>
+              <td>OOP, inheritance, modular design</td>
+              <td>Neural Network &mdash; Single</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </section>
+
+    <!-- Technologies -->
+    <section class="section" aria-labelledby="tech-heading">
+      <div class="container">
+
+        <span class="label">Technologies &amp; Concepts</span>
+        <h2 id="tech-heading">What I Used</h2>
+        <hr class="rule">
+
+        <ul class="tech-stack">
+          <li class="tag">Python</li>
+          <li class="tag">Jupyter Notebooks</li>
+          <li class="tag">Google Colab</li>
+          <li class="tag">MNIST Dataset</li>
+          <li class="tag">NumPy (not used &mdash; implemented from scratch)</li>
+          <li class="tag">OOP &amp; Inheritance</li>
+          <li class="tag">Backpropagation</li>
+          <li class="tag">Softmax</li>
+          <li class="tag">ReLU</li>
+          <li class="tag">Cross-Entropy Loss</li>
+          <li class="tag">MSE</li>
+          <li class="tag">Statistical Distance</li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- Overall reflection -->
+    <section class="section" aria-labelledby="reflection-heading">
+      <div class="container">
+
+        <span class="label">Looking Back</span>
+        <h2 id="reflection-heading">Overall Reflection</h2>
+        <hr class="rule">
+
+        <div class="project-article">
+          <p>
+            These four projects represent a clear progression from first principles to applied machine learning.
+            The artificial neuron was the smallest possible starting point &mdash; a single mathematical operation &mdash;
+            but every concept that followed grew from it directly. ReLU, weighted sums, and the idea that a
+            network decides whether to &ldquo;fire&rdquo; all come back to that first function.
+          </p>
+          <p>
+            The language detector was a deliberate detour away from neural networks. It showed that machine learning
+            does not always mean deep learning &mdash; a simple statistical distance measure built from scratch was
+            enough to classify three languages with high accuracy, given sufficient sample size. The design decisions
+            made there (normalising to percentages, choosing MSE over a basic distance) mirror the kinds of decisions
+            made when building larger models.
+          </p>
+          <p>
+            The two neural network projects showed what changes when you move from a working implementation to a
+            well-designed one. The single-class network worked. The modular OOP version was easier to experiment with,
+            easier to extend, and far easier to reason about. That design shift was the most important thing I took
+            away from the final skills demo.
+          </p>
+          <p>
+            The next direction I want to pursue is testing deeper architectures (more hidden layers, not just wider ones)
+            and applying these networks to a domain I care about &mdash; financial time series data.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

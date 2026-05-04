@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Network: Single Class &mdash; Abdul Mohaimin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-hero" aria-labelledby="project-hero-heading">
+      <div class="container">
+        <span class="label">Project 03 &mdash; Skills Demo 2 (CM)</span>
+        <h1 id="project-hero-heading">Neural Network<br>Single Class</h1>
+        <p>A <code>NeuralNetwork</code> class built from scratch &mdash; forward pass, backpropagation, and training on MNIST handwritten digits.</p>
+      </div>
+    </section>
+
+    <article class="section" aria-label="Project documentation">
+      <div class="container">
+        <a href="overview.html" class="back-link">Back to overview</a>
+
+        <div class="project-article">
+
+          <section aria-labelledby="purpose-heading">
+            <h2 id="purpose-heading">Purpose &amp; Context</h2>
+            <hr class="rule">
+            <p>
+              This project extended the single artificial neuron into a full neural network capable of classifying
+              handwritten digits from the MNIST dataset. Everything &mdash; weights, forward pass, loss calculation,
+              backpropagation, and training loop &mdash; was written from scratch in a single <code>NeuralNetwork</code> class.
+            </p>
+            <p>
+              The work was structured across three days. Day 1 built and tested individual functions in isolation.
+              Day 2 assembled them into the class. Day 3 trained three different architectures on real data
+              and compared their behaviour.
+            </p>
+          </section>
+
+          <section aria-labelledby="concept-heading">
+            <h2 id="concept-heading">Conceptual Explanation</h2>
+            <hr class="rule">
+            <p>
+              MNIST images are 28&times;28 pixel grids, each flattened into a list of 784 values normalised to 0&ndash;1.
+              The network outputs 10 probability values, one per digit class (0&ndash;9).
+            </p>
+            <ul class="doc-list">
+              <li><strong>Hidden layers</strong> use ReLU activation</li>
+              <li><strong>Output layer</strong> uses Softmax &mdash; converts raw values to a probability distribution summing to 1</li>
+              <li><strong>Loss</strong> is cross-entropy: <code>L = &minus;log(p_correct)</code></li>
+              <li><strong>Backpropagation</strong> computes gradients and nudges every weight in the direction that reduces loss</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="implementation-heading">
+            <h2 id="implementation-heading">Key Functions</h2>
+            <hr class="rule">
+
+            <h3 class="code-label">Forward pass through all layers</h3>
+            <pre><code>def forward(self, inputs):
+    layer_outputs = []
+    current_data = inputs  # start with the raw inputs
+
+    for index in range(len(self.weights)):
+    #check if this is the last layer
+        last_output = (index == len(self.weights) - 1)
+
+    # last layer uses softmax, all other layers use relu
+        activation = 'softmax' if last_output else 'relu'
+
+    # pass current data through the layer
+        pre_activation, post_activation = self._forward_layer(current_data, index , activation)
+
+    # store the results
+        layer_outputs.append((pre_activation, post_activation))
+
+    # output of this layer becomes input to the next
+        current_data = post_activation
+
+    return layer_outputs</code></pre>
+
+            <h3 class="code-label">Cross-entropy loss</h3>
+            <pre><code>def _cross_entropy_loss(self, output_probs, label):
+    """Compute cross-entropy loss for one example."""
+    # Your code here.
+    return -1*math.log(output_probs[label] + 1e-12)</code></pre>
+
+            <h3 class="code-label">Training loop</h3>
+            <pre><code>def train(self, data, epochs=1, learning_rate=0.01):
+    """
+    Train on data. Print loss and accuracy per epoch.
+    Returns (loss_history, accuracy_history).
+    """
+    # loss_history stores the loss for every single example across all epochs
+    loss_history = []
+    #accuracy_history stores the running accuracy at each point in training
+    #each value is how many we got right divided by how many we have seen so far
+    accuracy_history = []
+    #for every epoch in number of epochs
+    for epoch in range(epochs):
+        #reset the loss and the correct count to measure new performance each time
+        epoch_loss = 0.0
+        epoch_correct = 0
+
+        for label, pixels in data:
+            #run forward pass to get layer outputs
+            layer_outputs = self.forward(pixels)
+
+            #calculate loss for this example
+            loss = self._cross_entropy_loss(layer_outputs[-1][1], label)
+            #add this example loss to running total for individual epoch
+            epoch_loss += loss
+
+            #record individual loss for plotting
+            loss_history.append(loss)
+
+            # check if prediction is correct
+            correct = self.predict(pixels) == label
+            if correct:
+                epoch_correct += 1
+
+            #record correct or incorrect for plotting
+            #len(accuracy_history) tells me how many examples i have processed before this one
+            # added the plus 1 because I kept getting zero division error for the first example start
+            accuracy_history.append(epoch_correct / (len(accuracy_history) + 1))
+
+            # update weights using backprop
+            self._backprop(pixels, label, layer_outputs, learning_rate)
+
+        avg_loss = epoch_loss / len(data)
+        avg_acc = epoch_correct / len(data)
+        print(f'Epoch {epoch + 1}: loss = {avg_loss:.4f}   accuracy = {avg_acc:.2%}')
+
+    return loss_history, accuracy_history</code></pre>
+          </section>
+
+          <section aria-labelledby="experiment-heading">
+            <h2 id="experiment-heading">Experiment &mdash; Three Architectures</h2>
+            <hr class="rule">
+            <p>
+              Three networks were trained on the same 800 examples for 5 epochs at a learning rate of 0.01.
+              The only difference was architecture &mdash; the number of layers and nodes.
+            </p>
+
+            <table class="doc-table" aria-label="Architecture comparison">
+              <caption>Architecture descriptions before training</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Network</th>
+                  <th scope="col">Architecture</th>
+                  <th scope="col">Total Parameters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Tiny</td><td>784 &rarr; 8 &rarr; 10</td><td>6,370</td></tr>
+                <tr><td>Medium</td><td>784 &rarr; 64 &rarr; 32 &rarr; 10</td><td>52,650</td></tr>
+                <tr><td>Large</td><td>784 &rarr; 512 &rarr; 256 &rarr; 10</td><td>535,818</td></tr>
+              </tbody>
+            </table>
+
+            <h3 class="code-label">Training results (5 epochs, 800 examples)</h3>
+            <pre><code>--- Tiny ---
+Epoch 1: loss = 2.0789   accuracy = 31.13%
+Epoch 2: loss = 1.2215   accuracy = 64.50%
+Epoch 3: loss = 0.6973   accuracy = 79.38%
+Epoch 4: loss = 0.5015   accuracy = 85.88%
+Epoch 5: loss = 0.3970   accuracy = 89.88%
+
+--- Medium ---
+Epoch 1: loss = 2.2145   accuracy = 25.37%
+Epoch 2: loss = 1.2531   accuracy = 59.62%
+Epoch 3: loss = 0.6328   accuracy = 78.25%
+Epoch 4: loss = 0.4360   accuracy = 85.50%
+Epoch 5: loss = 0.3132   accuracy = 90.62%
+
+--- Large ---
+Epoch 1: loss = 1.0967   accuracy = 64.00%
+Epoch 2: loss = 0.3902   accuracy = 87.25%
+Epoch 3: loss = 0.1912   accuracy = 95.00%
+Epoch 4: loss = 0.0861   accuracy = 98.75%
+Epoch 5: loss = 0.0423   accuracy = 99.75%</code></pre>
+
+            <table class="doc-table" aria-label="Training vs test accuracy">
+              <caption>Training vs test accuracy &mdash; 200 unseen test examples</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Network</th>
+                  <th scope="col">Train Accuracy</th>
+                  <th scope="col">Test Accuracy</th>
+                  <th scope="col">Gap</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Tiny</td><td>92.88%</td><td>84.50%</td><td>+8.38%</td></tr>
+                <tr><td>Medium</td><td>95.62%</td><td>86.00%</td><td>+9.63%</td></tr>
+                <tr><td>Large</td><td>98.25%</td><td>89.00%</td><td>+9.25%</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section aria-labelledby="reflection-heading">
+            <h2 id="reflection-heading">Reflection</h2>
+            <hr class="rule">
+            <p>
+              The large network reached 99.75% training accuracy but only 89% on the test set. With 535,818 parameters
+              trained on only 800 examples, it memorised the training data rather than learning general patterns &mdash;
+              overfitting. Like a student who memorises the exact questions but struggles when the phrasing changes.
+            </p>
+            <p>
+              The tiny network had too few parameters and underfitted. The medium network offered the best balance.
+              That is the one I would choose for a real application &mdash; reasonable accuracy, fewer parameters,
+              less risk of overfitting.
+            </p>
+            <p>
+              Fixing the backpropagation indentation bug was the most significant debugging challenge.
+              The delta computation for the layer below was originally inside the wrong block, meaning gradients
+              were not propagating correctly. Once the indentation was corrected, training converged as expected.
+            </p>
+          </section>
+
+          <section aria-labelledby="full-code-heading">
+            <h2 id="full-code-heading">Full Implementation</h2>
+            <hr class="rule">
+            <p>Complete <code>NeuralNetwork</code> class as submitted, including all methods and the Day 3 experiment setup.</p>
+            <details class="code-details">
+              <summary class="code-details-summary">Show full code &darr;</summary>
+              <pre><code>import random
+import math
+import matplotlib.pyplot as plt
+
+class NeuralNetwork:
+
+    def __init__(self, layer_sizes):
+        self.weights = []
+        self.biases  = []
+
+        for i in range(len(layer_sizes) - 1):
+            layer_weights = [
+                [random.uniform(-0.1, 0.1) for _ in range(layer_sizes[i])]
+                for _ in range(layer_sizes[i + 1])
+            ]
+            layer_biases = [0.0] * layer_sizes[i + 1]
+            self.weights.append(layer_weights)
+            self.biases.append(layer_biases)
+
+    def __str__(self):
+        sizes = [len(self.weights[0][0])]
+        for layer in self.weights:
+            sizes.append(len(layer))
+        arch = ' -> '.join(map(str, sizes))
+        total_params = sum(
+            len(w) * len(w[0]) + len(b)
+            for w, b in zip(self.weights, self.biases)
+        )
+        weight_count = sum(len(w[0]) for w in self.weights)
+        bias_count   = len(self.biases[-1])
+        return (f"NeuralNetwork: {arch} |----|"
+                f"Activations: ReLU (hidden), Softmax (output)|----|"
+                f"Total parameters: {total_params} |----| "
+                f"Weight Count:{weight_count} |---| Bias Count {bias_count}")
+
+    def _relu(self, x):
+        """Return x if positive, otherwise 0."""
+        return max(0.0, x)
+
+    def _softmax(self, values):
+        """Convert a list of values to a probability distribution."""
+        max_val   = max(values)
+        exp_values = [math.exp(value - max_val) for value in values]
+        total      = sum(exp_values)
+        return [value / total for value in exp_values]
+
+    def _weighted_sum(self, weights, inputs, bias):
+        """Dot product of weights and inputs, plus bias."""
+        return sum(inp * weight for weight, inp in zip(weights, inputs)) + bias
+
+    def _forward_layer(self, inputs, layer_idx, activation):
+        """
+        Compute the output of one layer.
+        Returns (pre_activation, post_activation).
+        """
+        weights = self.weights[layer_idx]
+        biases  = self.biases[layer_idx]
+        #For every node in this layer, calculate its weighted sum. weights[node] is that nodes list of weights,
+        #inputs is what came in,
+        #biases[node] is that nodes bias. Collect all the results into the list called pre_activation
+        pre_activation = [self._weighted_sum(weights[node], inputs, biases[node])
+            for node in range(len(biases))] # len(biases) gives me the number of nodes in this layer. length directly = the number of nodes.
+        # apply softmax across all pre activation values together
+        if activation == 'softmax':
+            post_activation = self._softmax(pre_activation)
+        else:
+            # apply relu to each value one at a time
+            post_activation = [self._relu(value) for value in pre_activation]
+        # return both raw and activated values
+        return pre_activation, post_activation
+
+    def forward(self, inputs):
+        """
+        Pass inputs through all layers.
+        Returns a list of (pre, post) tuples, one per non-input layer.
+        """
+        layer_outputs = []
+        current_data = inputs  # start with the raw inputs
+
+        for index in range(len(self.weights)):
+        #check if this is the last layer
+            last_output = (index == len(self.weights) - 1)
+
+        # last layer uses softmax, all other layers use relu
+            activation = 'softmax' if last_output else 'relu'
+
+        # pass current data through the layer
+            pre_activation, post_activation = self._forward_layer(current_data, index , activation)
+
+        # store the results
+            layer_outputs.append((pre_activation, post_activation))
+
+        # output of this layer becomes input to the next
+            current_data = post_activation
+
+        return layer_outputs
+
+    def predict(self, inputs):
+        """Return the predicted digit for a given input."""
+        #call the forward Method
+        layer_outputs = self.forward(inputs)
+        #the final layers post activation values
+        output_probs= layer_outputs[-1][1]
+        #find the highest probability
+        max_prob = max(output_probs)
+        return output_probs.index(max_prob)
+
+    def _cross_entropy_loss(self, output_probs, label):
+        """Compute cross-entropy loss for one example."""
+        return -1*math.log(output_probs[label] + 1e-12)
+
+    def _backprop(self, inputs, label, layer_outputs, learning_rate):
+        """
+        Update weights using backpropagation.
+        Bring across the provided backprop function,
+        replacing net['weights'] with self.weights and so on.
+        """
+        n_layers = len(self.weights) # changed net to self
+
+        # One-hot target: all zeros except a 1 at the correct class.
+        target = [0.0] * 10
+        target[label] = 1.0
+
+        # Output layer gradient: cross-entropy + softmax simplify to output - target.
+        output_probs = layer_outputs[-1][1]
+        delta = [output_probs[i] - target[i] for i in range(len(output_probs))]
+
+        for layer_idx in range(n_layers - 1, -1, -1):
+
+            # The input to this layer is either the original input (layer 0)
+            # or the post-activation output of the previous layer.
+            if layer_idx == 0:
+                layer_input = inputs
+            else:
+                layer_input = layer_outputs[layer_idx - 1][1]
+        # Save current weights before updating.
+        # We need the original weights to compute the gradient for the layer below.
+            saved_weights = [row[:] for row in self.weights[layer_idx]] # net to self
+
+        # Update each weight and bias.
+            for j in range(len(self.weights[layer_idx])): # net to self
+                for k in range(len(self.weights[layer_idx][j])):# net to self
+                    # The gradient of the loss with respect to this weight is
+                # delta[j] * layer_input[k].
+                    self.weights[layer_idx][j][k] -= learning_rate * delta[j] * layer_input[k] # net to self
+                self.biases[layer_idx][j] -= learning_rate * delta[j] # net to self
+
+        # Compute delta for the layer below (chain rule).
+            if layer_idx > 0:
+                pre_activation = layer_outputs[layer_idx - 1][0]
+                new_delta = []
+                for k in range(len(layer_input)):
+                # Sum contributions from all nodes in the current layer.
+                    grad = sum(saved_weights[j][k] * delta[j]
+                           for j in range(len(delta)))
+                # ReLU's derivative: 1 if pre-activation was positive, else 0.
+                    relu_deriv = 1.0 if pre_activation[k] > 0 else 0.0
+                    new_delta.append(grad * relu_deriv)
+                delta = new_delta
+         #### fixed indentations causing errors###
+
+    def train(self, data, epochs=1, learning_rate=0.01):
+        """
+        Train on data. Print loss and accuracy per epoch.
+        Returns (loss_history, accuracy_history).
+        """
+        loss_history = []
+        accuracy_history = []
+        for epoch in range(epochs):
+            epoch_loss = 0.0
+            epoch_correct = 0
+
+            for label, pixels in data:
+                layer_outputs = self.forward(pixels)
+                loss = self._cross_entropy_loss(layer_outputs[-1][1], label)
+                epoch_loss += loss
+                loss_history.append(loss)
+                correct = self.predict(pixels) == label
+                if correct:
+                    epoch_correct += 1
+                accuracy_history.append(epoch_correct / (len(accuracy_history) + 1))
+                self._backprop(pixels, label, layer_outputs, learning_rate)
+
+            avg_loss = epoch_loss / len(data)
+            avg_acc = epoch_correct / len(data)
+            print(f'Epoch {epoch + 1}: loss = {avg_loss:.4f}   accuracy = {avg_acc:.2%}')
+
+        return loss_history, accuracy_history
+
+
+# --- Day 3: Three architecture experiment ---
+
+# Three architectures.
+tiny   = NeuralNetwork([784,  8,       10])   # very few nodes
+medium = NeuralNetwork([784, 64, 32,   10])   # moderate
+large  = NeuralNetwork([784, 512, 256, 10])   # many nodes
+
+print('Tiny:');   print(tiny)
+print('Medium:'); print(medium)
+print('Large:');  print(large)
+
+# Predictions before training
+# Tiny   — I predict that the tiny network has too few parameters and therefore will underfit
+# Medium — I expect reasonable accuracy here
+# Large  — too many parameters for 800 training examples so it might overfit:
+#           high training accuracy but lower test accuracy
+
+print('--- Tiny ---')
+losses_tiny, accs_tiny = tiny.train(train_data, epochs=5, learning_rate=0.01)
+
+print('--- Medium ---')
+losses_med, accs_med = medium.train(train_data, epochs=5, learning_rate=0.01)
+
+print('--- Large ---')
+losses_large, accs_large = large.train(train_data, epochs=5, learning_rate=0.01)
+
+# Evaluate all three on the test set
+results = {}
+for name, nn in [('Tiny', tiny), ('Medium', medium), ('Large', large)]:
+    tr = accuracy_on(nn, train_data)
+    te = accuracy_on(nn, test_data)
+    results[name] = (tr, te)
+    print(f'{name:&lt;8}  train: {tr:.2%}   test: {te:.2%}   gap: {tr - te:+.2%}')
+
+# Answers to analysis questions:
+#
+# 1. this tells me that the tiny network did not have enough parameters to learn uniqueness
+#    of each character — it has 8 hidden nodes which meant it learned the simplest patterns
+#    it could therefore underfitting
+#
+# 2. i think this can be associated to overfitting where the network memorised exactly what
+#    the digits in the training data looked like — when it came across a slightly different
+#    style of writing it fails to recognise it
+#
+# 3. i would choose medium network for real application — although large has the highest
+#    accuracy medium is only 3 percent away with much fewer parameters which means quicker
+#    run time, medium gives a good balance of reasonable accuracy fast prediction and
+#    less risk of overfitting</code></pre>
+            </details>
+          </section>
+
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -773,3 +773,306 @@ a.btn:visited {
     gap: var(--space-sm);
   }
 }
+
+
+/* ── 16. PROJECT DOCUMENTATION PAGES — ASSIGNMENT 2 ────────────
+   Styles for code blocks, data tables, doc lists, aside callouts,
+   and the overview page layout.
+   ─────────────────────────────────────────────────────────────── */
+
+.code-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+
+pre {
+  background-color: var(--clr-ink);
+  color: #f0ece4;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  padding: var(--space-md);
+  overflow-x: auto;
+  border-radius: 0;
+  margin-bottom: var(--space-md);
+  border-left: 4px solid var(--clr-accent);
+}
+
+code {
+  font-family: var(--font-body);
+  font-size: 0.9em;
+  background-color: #ede9e1;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-md);
+  font-size: var(--text-sm);
+}
+
+.doc-table caption {
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  text-align: left;
+  margin-bottom: var(--space-xs);
+}
+
+.doc-table thead th {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  border-bottom: var(--border);
+  padding: var(--space-xs) var(--space-sm);
+  text-align: left;
+}
+
+.doc-table tbody td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid #e5e5e5;
+  vertical-align: top;
+}
+
+.doc-table tbody tr:nth-child(even) td {
+  background-color: #faf8f4;
+}
+
+.doc-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--space-md);
+  counter-reset: doc-counter;
+}
+
+ol.doc-list li {
+  counter-increment: doc-counter;
+  padding: var(--space-xs) 0 var(--space-xs) 2.5rem;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+}
+
+ol.doc-list li::before {
+  content: counter(doc-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--clr-accent);
+  letter-spacing: 0.05em;
+  top: 0.55rem;
+}
+
+ul.doc-list li {
+  padding: var(--space-xs) 0 var(--space-xs) 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+}
+
+ul.doc-list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+.doc-aside {
+  border: var(--border);
+  border-left: 4px solid var(--clr-accent);
+  padding: var(--space-md);
+  margin-block: var(--space-md);
+  background-color: var(--clr-surface);
+}
+
+.doc-aside h3 {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.doc-aside p {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  margin: 0;
+}
+
+.overview-toc {
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.overview-toc li { border-top: var(--border); }
+.overview-toc li:last-child { border-bottom: var(--border); }
+
+.overview-toc-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  text-decoration: none;
+}
+
+.overview-toc-link:hover { text-decoration: none; }
+
+.toc-index {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 900;
+  color: var(--clr-muted);
+  min-width: 3rem;
+  transition: color 0.15s ease;
+}
+
+.overview-toc-link:hover .toc-index { color: var(--clr-accent); }
+
+.toc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.toc-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--clr-ink);
+  transition: color 0.15s ease;
+}
+
+.overview-toc-link:hover .toc-title { color: var(--clr-accent); }
+
+.toc-desc {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+}
+
+.toc-arrow {
+  font-size: var(--text-lg);
+  color: var(--clr-muted);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.overview-toc-link:hover .toc-arrow {
+  color: var(--clr-accent);
+  transform: translateX(4px);
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.overview-card {
+  border: var(--border);
+  padding: var(--space-md);
+  background-color: var(--clr-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.overview-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.overview-card h3 a:link,
+.overview-card h3 a:visited {
+  color: var(--clr-ink);
+  text-decoration: none;
+}
+
+.overview-card h3 a:hover {
+  color: var(--clr-accent);
+  text-decoration: none;
+}
+
+.overview-card p {
+  font-size: var(--text-sm);
+  color: var(--clr-muted);
+  flex-grow: 1;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  list-style: none;
+  padding: 0;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .toc-index { font-size: var(--text-lg); min-width: 2rem; }
+  .toc-title { font-size: var(--text-base); }
+  pre { font-size: var(--text-xs); padding: var(--space-sm); }
+  .doc-table { font-size: var(--text-xs); }
+  .doc-table thead th,
+  .doc-table tbody td { padding: 4px var(--space-xs); }
+}
+
+@media (max-width: 480px) {
+  .overview-toc-link { gap: var(--space-sm); }
+  .toc-desc { display: none; }
+}
+
+/* ── Collapsible full-code sections ──────────────────────────── */
+
+.code-details {
+  margin-bottom: var(--space-md);
+}
+
+.code-details-summary {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  cursor: pointer;
+  padding: var(--space-sm) 0;
+  border-top: var(--border);
+  display: block;
+  list-style: none;
+  user-select: none;
+}
+
+.code-details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.code-details[open] .code-details-summary {
+  margin-bottom: var(--space-xs);
+}
+
+.code-details pre {
+  margin-top: 0;
+}

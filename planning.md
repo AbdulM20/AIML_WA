@@ -1,61 +1,42 @@
-# Web Authoring Assignment 1 — Planning Document
+# Web Authoring — Planning Document
 
 **Student Name:** Abdul Mohaimin  
-**Assignment:** Web Authoring Assignment 1  
 **Module:** Web Authoring 5N1910  
-**Date:** 18.02.2026  
+**Assignment 1 Date:** 18.02.2026  
+**Assignment 2 Date:** 29.04.2026  
 
 ---
 
-## 1. Portfolio Purpose and Audience
+## Assignment 1 Planning
 
-### What is the purpose of this portfolio landing page?
+*Original planning document content preserved below.*
+
+---
+
+### 1. Portfolio Purpose and Audience
 
 The purpose of this portfolio is to showcase my abilities and educational journey as part of my AIML Foundations course. The page creates an impression of professionalism, curiosity, and technical competence while remaining accessible to non-technical viewers.
-
-### Who is my target audience?
 
 My primary audience includes my lecturers, classmates, potential mentors, and potential future employers in the tech and AI fields. This affects my design choices. I prioritise readability, structure, and logical organisation over decorative design, and I keep the layout professional at all times.
 
 ---
 
-## 2. Content Planning
+### 2. Content Planning (Assignment 1)
 
-### What is included on the landing page?
+**Header section:** My name, tagline, and navigation links.  
+**Introduction section:** Large typographic display of my name with a short description.  
+**Skills section:** Unordered list displayed as tags with a custom code icon.  
+**Projects section:** Placeholder for Assignment 2.  
+**Footer section:** Copyright notice and links.
 
-**Header section:**
-- My name: Abdul Mohaimin
-- Tagline: "Machine Learning Student — Aspiring AI Specialist"
-- Navigation links to Home, About, and Contact
-
-**Introduction section:**
-A large typographic display of my name alongside a short description of who I am and what I do. Includes my location and availability.
-
-**Skills section:**
-An unordered list of core skills displayed as tags — Python, HTML & CSS, Machine Learning, Data Visualisation, Git & GitHub, and Linear Algebra. Includes a custom code icon image created in Canva, stored in the `images/` folder.
-
-**Projects section:**
-A placeholder section indicating that project documentation is in development.
-
-**Navigation:**
-Navigation appears in the header (top right) and links to Home, About, and Contact.
-
-**Footer section:**
-Copyright notice, name, year, and links to GitHub and Contact.
-
-### What is included on the About page?
-
-A two-column layout with a biography on the left and structured information blocks on the right. The biography covers my background, interests, and direction. The info blocks cover skills, tools and technologies, education, and contact details including a mailto link.
-
-### What is included on the Contact page?
-
-A contact form with name, email, subject, and message fields alongside a GitHub profile link and location information.
+**About page:** Two-column layout — biography on the left, info blocks on the right.  
+**Contact page:** Contact form with name, email, subject, and message fields alongside a GitHub link.
 
 ---
 
-## 3. Design Decisions
+### 3. Design Decisions
 
-### Colour Scheme
+**Colour scheme:**
 
 | Role | Colour | Hex |
 |---|---|---|
@@ -66,69 +47,39 @@ A contact form with name, email, subject, and message fields alongside a GitHub 
 | Borders | Near-black | `#111111` |
 | Accent | Deep red | `#c0392b` |
 
-**Why these colours?**  
-The cream background is easier on the eyes than pure white for extended reading. The near-black text on cream creates high contrast without being harsh. The deep red accent creates clear focal points on labels, links, and active states without competing with the content. The overall palette follows an editorial brutalism direction : stark, structural and professional.
+The cream background is easier on the eyes than pure white. The deep red accent creates clear focal points without competing with content. The palette follows an editorial brutalism direction.
 
-### Typography
+**Typography:**
 
 | Role | Font | Fallback |
 |---|---|---|
 | Display headings | Playfair Display | Georgia, serif |
 | Body copy | IBM Plex Mono | Courier New, monospace |
 
-**Source:** Google Fonts loaded via @import in styles.css
+Playfair Display creates an editorial, authoritative feel. IBM Plex Mono reinforces the coding and data theme. Together they create a clear visual hierarchy.
 
-**Why these fonts?**  
-Playfair Display is a high-contrast serif that creates an editorial, authoritative feel for large headings. IBM Plex Mono is a technical monospace font that reinforces the coding and data theme of the portfolio. Together they create a clear visual hierarchy.
-
-### Layout
-
-- Single-column structure for main content sections
-- CSS Grid for the two-column layouts on About and Contact pages
-- CSS Flexbox for header and footer alignment
-- Maximum content width: 1200px, centred with auto margins
-- Generous section padding using CSS custom properties
-- Sticky header so navigation stays visible while scrolling
-
-### Image
-
-A custom code icon was created in Canva and exported as a PNG with a transparent background. It is stored in the `images/` folder and placed inline next to the "What I Work With" heading on the homepage. Sized to 40x40px via CSS with `border-radius: 50%` to appear circular.
+**Layout:** Single-column for main content; CSS Grid for two-column pages; CSS Flexbox for header and footer. Maximum content width 1200px.
 
 ---
 
-## 4. Navigation Structure
+### 4. Navigation Structure
 
-**Location:** Top right of header, horizontal layout  
-**Links:** Home → index.html, About → about.html, Contact → contact.html  
-**Active page indicator:** Current page link displayed in accent colour with a bottom border underline  
-
-**Why this structure?**  
-Simple and predictable. Users immediately see what pages are available without confusion. Clear labelling makes navigation intuitive for both technical and non-technical visitors.
+Top right of header, horizontal layout. Links: Home → index.html, About → about.html, Contact → contact.html. Active page link displayed in accent colour with a bottom border underline.
 
 ---
 
-## 5. Wireframes
+### 5. Wireframes (Assignment 1)
 
-**Format:** Hand-drawn (see submitted sketch)
-
-**Desktop layout structure:**
-1. Header — name left, navigation right
-2. Intro section — large name left, tagline and description right (2:1 grid)
-3. Skills section — icon and horizontal tag list
-4. Projects placeholder section
-5. Footer — copyright left, links right
-
-**Responsive considerations:**  
-On smaller screens the intro stacks vertically, grids collapse to a single column, and spacing reduces. Navigation links remain visible at all breakpoints.
+Hand-drawn sketches submitted separately. Desktop layout: header → intro → skills → projects → footer. Responsive: grids collapse to single column on mobile.
 
 ---
 
-## 6. Technologies and Tools
+### 6. Technologies and Tools (Assignment 1)
 
 | Tool | Purpose |
 |---|---|
 | WebStorm | Code editor |
-| Safari | Browser testing and DevTools inspection |
+| Safari | Browser testing |
 | GitHub | Version control |
 | GitHub Pages | Live deployment |
 | Google Fonts | Web typography |
@@ -137,79 +88,177 @@ On smaller screens the intro stacks vertically, grids collapse to a single colum
 
 ---
 
-## 7. HTML Elements Planned and Used
+### 7. HTML Elements Planned and Used (Assignment 1)
 
 | Element | Purpose | Why Appropriate |
 |---|---|---|
-| `<header>` | Site header with name and navigation | Semantic landmark, improves accessibility |
-| `<nav>` | Navigation menu | Identifies navigation region for screen readers |
+| `<header>` | Site header | Semantic landmark |
+| `<nav>` | Navigation menu | Identifies navigation region |
 | `<main>` | Primary page content | Semantic landmark |
-| `<section>` | Groups thematic content | Organises content logically with headings |
-| `<aside>` | Supplementary info on About and Contact pages | Tangentially related content |
-| `<footer>` | Site footer | Semantic landmark for closing content |
-| `<h1>`–`<h3>` | Heading hierarchy | Communicates document structure |
+| `<section>` | Groups thematic content | Logical content organisation |
+| `<aside>` | Supplementary info | Tangentially related content |
+| `<footer>` | Site footer | Semantic landmark |
+| `<h1>`–`<h3>` | Heading hierarchy | Document structure |
 | `<p>` | Body paragraphs | Standard prose content |
 | `<ul>` | Skills list, tech tags | Unordered grouped items |
-| `<a>` | Navigation and external links | Standard hyperlink element |
-| `<img>` | Code icon image | Visual content with alt text |
+| `<a>` | Navigation and external links | Standard hyperlink |
+| `<img>` | Code icon | Visual content with alt text |
 | `<form>` | Contact form | User input collection |
 | `<input>` | Text and email fields | Form data entry |
 | `<textarea>` | Message field | Multi-line text input |
-| `<label>` | Form field labels | Accessibility — links label to input |
+| `<label>` | Form field labels | Accessibility |
 
 ---
 
-## 8. CSS Properties and Techniques
+### 8. CSS Properties and Techniques (Assignment 1)
 
-### CSS Grid
-Used for the two-column layouts on the About and Contact pages, and the intro strip on the homepage.
-
-### CSS Flexbox
-Used for the header (logo left, nav right), footer, and navigation link alignment.
-
-### CSS Custom Properties (Variables)
-All colours, fonts, spacing, and border values stored as variables in `:root`. This means the entire site's appearance can be updated by changing a single value.
-
-### ID Selectors
-Used on landmark elements: `#site-header`, `#main-nav`, `#main-content`, `#site-footer`.
-
-### Class Selectors
-Used for reusable components: `.container`, `.label`, `.btn`, `.info-block`, `.skills-icon` etc.
-
-### Element Selectors
-Used for base styles: `body`, `h1`, `p`, `ul`, `img`, `label`, `input`, `textarea`.
-
-### Combination Selectors
-Used to scope styles precisely: `.site-nav a`, `.info-block ul li`, `input:focus`, `a.btn:link`.
-
-### Link Pseudo-classes
-All four states defined: `a:link`, `a:visited`, `a:hover`, `a:active`.
-
-### Media Queries
-Two breakpoints: 768px (tablet) and 480px (mobile). Grids collapse to single column, spacing reduces, navigation gap tightens.
-
-### Hover Effects
-Navigation links, footer links, and buttons all change colour on hover. 
+CSS Grid, CSS Flexbox, CSS Custom Properties, ID and class selectors, combination selectors, link pseudo-classes, media queries at 768px and 480px, hover effects.
 
 ---
 
-## 9. Implementation Plan
+### 9. Implementation Plan (Assignment 1)
 
-1. Create basic HTML structure with semantic elements  
-2. Add header and navigation  
-3. Add intro section with name and tagline  
-4. Build skills section with unordered list and icon image  
-5. Add contact page with form  
-6. Add about page with biography and info blocks  
-7. Write styles.css with all required properties  
-8. Implement Grid and Flexbox layouts  
-9. Add responsive media queries  
-10. Test in Safari DevTools  
-11. Deploy to GitHub Pages  
+Standard build order: HTML structure → header → sections → stylesheet → grid/flexbox → responsive → test → deploy.
 
-### Anticipated Challenges
-- Making layouts responsive without breaking at different screen widths
-- Ensuring proper spacing and alignment across pages
-- Keeping the design minimal while remaining visually engaging
+---
 
-These were addressed by testing frequently in Safari DevTools and adjusting CSS step by step.
+---
+
+## Assignment 2 Planning
+
+### 10. Assignment 2 Purpose and Scope
+
+Assignment 2 extends the portfolio with five documentation pages covering the machine learning programming projects completed during the course. The goal is to document each project clearly enough that a reader with no prior knowledge of the code can understand what was built, why, and what the results were.
+
+---
+
+### 11. Site Map — Updated
+
+```
+index.html (updated — project cards now link to all five pages)
+├── about.html
+├── contact.html
+└── Projects
+    ├── neuron.html        — Artificial Neuron
+    ├── language.html      — Language Detector
+    ├── nn-single.html     — Neural Network: Single Class
+    ├── nn-multi.html      — Neural Network: Multiple Classes
+    └── overview.html      — Portfolio Overview
+```
+
+---
+
+### 12. Content Planning (Assignment 2)
+
+**neuron.html** — Artificial Neuron  
+Purpose, conceptual explanation (ReLU, weighted sum, bias), implementation code blocks, test results table, reflection on bugs found.
+
+**language.html** — Language Detector  
+Purpose, five-step pipeline explanation, two distance methods (compare_statistics and MSE), results tables for language pair distances and minimum sample size, reflection.
+
+**nn-single.html** — Neural Network: Single Class  
+Purpose and three-day structure, conceptual explanation (forward pass, loss, backprop), NeuralNetwork class code blocks, three-architecture experiment with training results and train/test accuracy table, reflection on overfitting.
+
+**nn-multi.html** — Neural Network: Multiple Classes  
+Purpose, OOP design explanation (inheritance trees, polymorphism), key code blocks (base classes, softmax, make_network), two-architecture experiment results, reflection on design shift.
+
+**overview.html** — Portfolio Overview  
+Table of contents (linked list of all four projects), project summary cards, progression timeline table, technologies list, overall learning reflection.
+
+---
+
+### 13. Wireframes (Assignment 2)
+
+**Documentation page template (all four project pages follow this structure):**
+
+```
+[Header — same as all pages]
+[Page hero — project title and label]
+[Back link — overview.html]
+[Purpose & Context — prose]
+[Conceptual Explanation — ordered list or prose + aside callout]
+[Implementation — code-label + pre/code blocks]
+[Results/Testing — data table(s)]
+[Reflection — prose]
+[Footer — same as all pages]
+```
+
+**Overview page:**
+
+```
+[Header]
+[Page hero]
+[Table of contents — large linked list with index numbers]
+[Project summary cards — 2-column grid]
+[Timeline table]
+[Technologies — tag list]
+[Overall reflection — prose]
+[Footer]
+```
+
+---
+
+### 14. Design Decisions (Assignment 2)
+
+The Assignment 2 pages extend the existing editorial brutalist aesthetic without changing anything from Assignment 1. New visual elements added:
+
+**Code blocks:** Near-black background (`#111111`) with warm off-white text and a red left border. Consistent with the site's use of red as an accent. IBM Plex Mono is already the site's body font, so code looks native.
+
+**Data tables:** Clean, minimal — borders only on header row and between rows. Small uppercase column headers in muted grey, matching the `.label` style used elsewhere.
+
+**Aside callouts:** White background with a 4px red left border. Used for key insights on project pages (e.g. why percentages matter in the language detector, the linear activation insight).
+
+**Overview TOC:** Large Playfair Display index numbers in muted grey that turn red on hover. Each entry spans the full content width, similar to editorial magazine link styles.
+
+---
+
+### 15. Technical Planning (Assignment 2)
+
+**Development tools:** WebStorm, Safari DevTools, GitHub.
+
+**GitHub Pages:** Deployed from the same repository as Assignment 1. All new files committed to `main` branch, root directory.
+
+**Code generators:** No AI was used to generate the Python code in the skills demos — all code was written and tested during class sessions. The HTML and CSS for this assignment was structured by hand, building on the existing stylesheet rather than generating from scratch.
+
+**W3C Validation:** All five new pages will be validated against the W3C HTML validator before final submission. The existing CSS will be re-validated with the new rules appended.
+
+---
+
+### 16. HTML Elements Added (Assignment 2)
+
+| Element | Page(s) | Purpose |
+|---|---|---|
+| `<article>` | All project pages | Wraps the full project documentation |
+| `<pre>` | All project pages | Preformatted code blocks |
+| `<code>` | All project pages | Inline and block code |
+| `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`, `<caption>` | All project pages, overview | Data tables for results |
+| `<ol>` | neuron.html, language.html, nn-multi.html | Ordered lists for steps and concepts |
+| `<aside>` | language.html, nn-multi.html | Callout blocks for key insights |
+| `<nav>` (overview) | overview.html | Table of contents navigation |
+
+**HTML character entities used across new pages (selection):**  
+`&mdash;` `&rarr;` `&times;` `&ndash;` `&ldquo;` `&rdquo;` `&lsquo;` `&rsquo;` `&hellip;` `&copy;` `&amp;` `&#10003;` `&#10007;`
+
+---
+
+### 17. CSS Techniques Added (Assignment 2)
+
+**New selectors:**  
+`.code-label`, `pre`, `code`, `pre code`, `.doc-table`, `.doc-table caption`, `.doc-table thead th`, `.doc-table tbody td`, `.doc-table tbody tr:nth-child(even) td`, `.doc-list`, `ol.doc-list li::before`, `ul.doc-list li::before`, `.doc-aside`, `.overview-toc`, `.overview-toc-link`, `.toc-index`, `.toc-title`, `.toc-desc`, `.toc-arrow`, `.overview-grid`, `.overview-card`, `.tag-list`
+
+**New techniques introduced:**  
+- CSS `counter-reset` and `counter-increment` for custom ordered list numbers  
+- `nth-child(even)` pseudo-class for table zebra striping  
+- `transform: translateX()` on hover for the TOC arrow animation  
+- `border-collapse: collapse` for the data tables  
+
+**Existing techniques extended:**  
+All Assignment 1 variables (`--clr-accent`, `--font-display`, `--border`, etc.) reused throughout. No new custom properties needed. New media query rules added within the existing `@media (max-width: 768px)` and `@media (max-width: 480px)` blocks.
+
+---
+
+### 18. Anticipated Challenges (Assignment 2)
+
+- Keeping code blocks readable on narrow screens without breaking the layout — addressed with `overflow-x: auto` on `pre`
+- Table responsiveness on mobile — addressed by reducing font size and padding at the 768px breakpoint
+- Consistent visual weight between code-heavy pages and prose-heavy pages — addressed by using the same `.project-article` max-width container on all documentation pages

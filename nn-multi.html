@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Network: Multiple Classes &mdash; Abdul Mohaimin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-hero" aria-labelledby="project-hero-heading">
+      <div class="container">
+        <span class="label">Project 04 &mdash; Skills Demo 3</span>
+        <h1 id="project-hero-heading">Neural Network<br>Multiple Classes</h1>
+        <p>A fully modular neural network built with object-oriented design &mdash; swappable layers, activations, and output functions trained on MNIST.</p>
+      </div>
+    </section>
+
+    <article class="section" aria-label="Project documentation">
+      <div class="container">
+        <a href="overview.html" class="back-link">Back to overview</a>
+
+        <div class="project-article">
+
+          <section aria-labelledby="purpose-heading">
+            <h2 id="purpose-heading">Purpose &amp; Context</h2>
+            <hr class="rule">
+            <p>
+              Skills Demo 3 rebuilt the neural network from scratch with a new design principle: modularity.
+              Instead of a single class holding everything, each component &mdash; layers, activations, output functions &mdash;
+              became its own class with a shared interface. This made it possible to swap any part of the network
+              without rewriting the training logic.
+            </p>
+            <p>
+              The project was completed across four parts: individual planning (Part A), group implementation (Part B),
+              maths questions (Part C), and experiments (Part D). The experiments compared two architectures on MNIST.
+            </p>
+          </section>
+
+          <section aria-labelledby="design-heading">
+            <h2 id="design-heading">Object-Oriented Design</h2>
+            <hr class="rule">
+            <p>
+              The key design insight was that <code>Model</code> should not care what type of layer,
+              activation, or output function it is working with &mdash; it just calls <code>.forward()</code>
+              on whatever it has. This is polymorphism through inheritance.
+            </p>
+            <ul class="doc-list">
+              <li>
+                <strong>Layer</strong> &rarr; <code>InputLayer</code>, <code>HiddenLayer</code>, <code>OutputLayer</code>
+                &mdash; all share a <code>forward(inputs)</code> interface so <code>Model</code> can loop through them uniformly
+              </li>
+              <li>
+                <strong>Activation</strong> &rarr; <code>ReLU</code>, <code>Sigmoid</code>, <code>Linear</code>
+                &mdash; any activation can be passed into a <code>HiddenLayer</code> at construction time
+              </li>
+              <li>
+                <strong>OutputFunction</strong> &rarr; <code>Softmax</code>, <code>LinearOutput</code>
+                &mdash; the output layer&rsquo;s behaviour is equally swappable
+              </li>
+            </ul>
+
+            <aside class="doc-aside" aria-label="Linear activation insight">
+              <h3>The Linear activation insight</h3>
+              <p>
+                Before writing any code, the planning phase asked: what would happen if you used <code>Linear</code>
+                activation for every layer? The instinct written in the planning notebook: &ldquo;Linear just passes
+                the value through unchanged so stacking multiple linear layers is the same as having one &mdash;
+                no matter how many layers I add the network would never be able to learn anything complex.&rdquo;
+              </p>
+            </aside>
+          </section>
+
+          <section aria-labelledby="implementation-heading">
+            <h2 id="implementation-heading">Key Functions</h2>
+            <hr class="rule">
+
+            <h3 class="code-label">Base Layer class and HiddenLayer</h3>
+            <pre><code>class Layer:
+    """
+    This is the base class for all Layers in this network.
+
+    this defines the interface all the layers will follow meaning a forward method which
+    accepts inputs, returns output. this class does nothing on its own.
+    its purpose is that the input layer , hidden layer and output layer all share the same shape
+    so that the model can loop through itself (self.layers) without caring which type it is.
+    """
+    def forward(self, inputs):
+        """
+        pass inputs through this layer and return the outputs,
+        subclasses will override this
+        """
+        pass
+
+class HiddenLayer(Layer):
+    """ This should hold its own weights and biases as instance attributes
+     so that the backpropagation can reach in and update them. here we can apply an activation
+     function meaning Sigmoid, relu, linear after doing the weighted sums
+     """
+    def __init__(self,weights,biases,activation):
+        self.weights = weights
+        self.biases = biases
+        self.activation = activation
+
+    def forward(self, inputs):
+        pre_activation_values = []
+        """
+        loop through each node in this layer
+        zip pairs of each node's weight list with its corresponding bias
+        so we don't need to index manually
+        """
+        for node_weights, node_bias in zip(self.weights, self.biases):
+            """compute the weighted sum for this node
+            zip pairs each individual weight with its corresponding input value
+            weights * inputs multiplies them together
+            sum() adds all those together
+            then the bias is added to give the node the ability to fire even when all inputs are zero
+            this gives the pre activation value for this node
+            """
+            weighted_sum = sum(weight * input_value for weight, input_value in zip(node_weights, inputs)) + node_bias
+            # store this node's pre activation value
+            pre_activation_values.append(weighted_sum)
+        # store pre activation on the instance so the backprop can access them later
+        self.pre_activation_values = pre_activation_values
+        #applying the activation function to all pre activation values at once
+        post_activation_values = self.activation.forward(pre_activation_values)
+        return post_activation_values</code></pre>
+
+            <h3 class="code-label">Softmax output function</h3>
+            <pre><code>class Softmax(OutputFunction):
+    """
+    converts a list of raw values into a distribution.
+    every value will be between 0 and 1 and they will all sum to 1.
+    """
+    def forward(self, inputs):
+        # subtract the max value first so the numbers don't get too big.
+        max_value = max(inputs)
+        exponents = [math.exp(input_value - max_value) for input_value in inputs]
+        total = sum(exponents)
+        return [exponent / total for exponent in exponents]</code></pre>
+
+            <h3 class="code-label">make_network factory function</h3>
+            <pre><code>def make_network(layer_sizes, activation, output_function):
+    """
+    builds the layers needed to create a model.
+    takes the sizes, activation and output function and returns a list of layers
+    that can be passed straight into Model.
+    """
+    layers = [InputLayer()]
+
+    for layer_index in range(1, len(layer_sizes)):
+        num_inputs = layer_sizes[layer_index - 1]
+        num_nodes  = layer_sizes[layer_index]
+
+        # give each weight a small random value so no two nodes start the same
+        # logic is if all weights were equal the network would never learn
+        weights = [[random.uniform(-0.1, 0.1) for input_index in range(num_inputs)] for node_index in range(num_nodes)]
+
+        # biases start at zero
+        biases = [0.0] * num_nodes
+
+        # the last layer gets the output function, everything else gets the activation
+        if layer_index == len(layer_sizes) - 1:
+            layers.append(OutputLayer(weights, biases, output_function))
+        else:
+            layers.append(HiddenLayer(weights, biases, activation))
+
+    return layers</code></pre>
+          </section>
+
+          <section aria-labelledby="experiments-heading">
+            <h2 id="experiments-heading">Experiments</h2>
+            <hr class="rule">
+            <p>
+              Two architectures trained on 2,000 MNIST examples for 5 epochs at learning rate 0.01.
+              Both used ReLU hidden activations and Softmax output.
+            </p>
+
+            <table class="doc-table" aria-label="Architecture comparison">
+              <caption>Architecture and parameter counts before training</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col">Architecture</th>
+                  <th scope="col">Hidden Layer Params</th>
+                  <th scope="col">Output Layer Params</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Model A</td>
+                  <td>784 &rarr; 64 &rarr; 10</td>
+                  <td>50,240</td>
+                  <td>650</td>
+                  <td>50,890</td>
+                </tr>
+                <tr>
+                  <td>Model B</td>
+                  <td>784 &rarr; 128 &rarr; 10</td>
+                  <td>100,480</td>
+                  <td>1,290</td>
+                  <td>101,770</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3 class="code-label">Training history &mdash; loss per epoch</h3>
+            <pre><code>--- Model A ---
+epoch 1: loss 0.9809, accuracy 0.7010
+epoch 2: loss 0.3827, accuracy 0.8825
+epoch 3: loss 0.2663, accuracy 0.9220
+epoch 4: loss 0.1965, accuracy 0.9485
+epoch 5: loss 0.1464, accuracy 0.9625
+
+--- Model B ---
+epoch 1: loss 0.8735, accuracy 0.7320
+epoch 2: loss 0.3632, accuracy 0.8920
+epoch 3: loss 0.2520, accuracy 0.9290
+epoch 4: loss 0.1810, accuracy 0.9520
+epoch 5: loss 0.1310, accuracy 0.9690
+
+Model A: 0.897   Model B: 0.907</code></pre>
+
+            <table class="doc-table" aria-label="Final test accuracy">
+              <caption>Final test accuracy on 400 unseen examples</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col">Training Accuracy (epoch 5)</th>
+                  <th scope="col">Test Accuracy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Model A &mdash; 64 hidden nodes</td><td>96.25%</td><td>89.7%</td></tr>
+                <tr><td>Model B &mdash; 128 hidden nodes</td><td>96.90%</td><td>90.7%</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section aria-labelledby="reflection-heading">
+            <h2 id="reflection-heading">Reflection</h2>
+            <hr class="rule">
+            <p>
+              Model B performed as predicted &mdash; better results and not significantly slower. Most of the learning
+              happened in epochs 1 and 2, with diminishing returns from epoch 3 onwards. The loss dropped sharply
+              then levelled off.
+            </p>
+            <p>
+              The biggest difference from the previous skills demo was the design approach. Having separate classes for
+              layers and activations made the code much easier to reason about and experiment with. Testing a different
+              activation meant passing a different object into <code>make_network</code> rather than rewriting the class.
+            </p>
+            <p>
+              The next step I would take is testing multiple hidden layers to see whether adding depth rather than just
+              width improves performance on this dataset.
+            </p>
+          </section>
+
+          <section aria-labelledby="full-code-heading">
+            <h2 id="full-code-heading">Full Implementation</h2>
+            <hr class="rule">
+            <p>Complete <code>neural_network.py</code> as submitted, including all classes, the Model training loop, backpropagation, and the experiment notebook setup.</p>
+            <details class="code-details">
+              <summary class="code-details-summary">Show full code &darr;</summary>
+              <pre><code>import random
+import math
+
+class Layer:
+    """
+    This is the base class for all Layers in this network.
+
+    this defines the interface all the layers will follow meaning a forward method which
+    accepts inputs, returns output. this class does nothing on its own.
+    its purpose is that the input layer , hidden layer and output layer all share the same shape
+    so that the model can loop through itself (self.layers) without caring which type it is.
+    """
+    def forward(self, inputs):
+        """
+        pass inputs through this layer and return the outputs,
+        subclasses will override this
+        """
+        pass
+
+class InputLayer(Layer):
+    """
+    this is the first layer in the network
+    it will do nothing but accept inputs and pass them through unchanged meaning no weights,
+    biases nor activations
+    """
+    def forward(self,inputs):
+        return inputs.copy()
+    """because when you are handing info the assumption is either it is modifiying
+    the object your dealing with or the thing ou had it is"""
+
+class HiddenLayer(Layer):
+    """ This should hold its own weights and biases as instance attributes
+     so that the backpropagation can reach in and update them. here we can apply an activation
+     function meaning Sigmoid, relu, linear after doing the weighted sums
+     """
+    def __init__(self,weights,biases,activation):
+        self.weights = weights
+        self.biases = biases
+        self.activation = activation
+
+    def forward(self, inputs):
+        """
+        as we send it forward in from this layer we need to compute the weighted sum for each node
+        then add the bias then apply the activation function
+
+        we will also store the pre activation values for back propagation as learned in the
+        previous skills demo these values are important
+        we also need this to return a list of post activation values
+        """
+        pre_activation_values = []
+        """
+        loop through each node in this layer
+        zip pairs of each node's weight list with its corresponding bias
+        so we don't need to index manually
+        """
+        for node_weights, node_bias in zip(self.weights, self.biases):
+            """compute the weighted sum for this node
+            zip pairs each individual weight with its corresponding input value
+            weights * inputs multiplies them together
+            sum() adds all those together
+            then the bias is added to give the node the ability to fire even when all inputs are zero
+            this gives the pre activation value for this node
+            """
+            weighted_sum = sum(weight * input_value for weight, input_value in zip(node_weights, inputs)) + node_bias
+            # store this node's pre activation value
+            pre_activation_values.append(weighted_sum)
+        # store pre activation on the instance so the backprop can access them later
+        self.pre_activation_values = pre_activation_values
+        #applying the activation function to all pre activation values at once
+        post_activation_values = self.activation.forward(pre_activation_values)
+        return post_activation_values
+
+class OutputLayer(Layer):
+    """ the final layer in the network
+    like hidden layer it holds weights and biases as instance attributes.
+    instead of an activation function it holds an output function
+    meaning softmax or linear which produces the final predictions.
+    """
+    def __init__(self, weights, biases, output_function):
+        self.weights         = weights
+        self.biases          = biases
+        self.output_function = output_function
+
+    def forward(self, inputs):
+        """
+        compute weighted sums for all output nodes, then apply the output function.
+        stores pre_activation_values for backpropagation.
+        """
+        pre_activation_values = []
+        # same weighted sum logic as hidden layer
+        for node_weights, node_bias in zip(self.weights, self.biases):
+            weighted_sum = sum (weight * input_value for weight, input_value in zip(node_weights, inputs)) + node_bias
+            pre_activation_values.append(weighted_sum)
+        self.pre_activation_values = pre_activation_values
+        #apply the output function to all pre-activation values at once
+        #this gives us the final predictions of the network
+        output_values = self.output_function.forward(pre_activation_values)
+        return output_values
+
+class Activation:
+    """
+    base class for all activation functions in this network.
+    defines the system all activation functions must follow meaning a forward method
+    that accepts a list of pre activation values and returns a list of post-activation values.
+    """
+    def forward(self, inputs):
+        pass
+
+class Sigmoid(Activation):
+    """
+    applies the sigmoid function to each value individually.
+    squashes any value into a range between 0 and 1.
+    """
+    def forward(self, inputs):
+        # apply sigmoid to each value in the list
+        return [1 / (1 + math.exp(-input_value)) for input_value in inputs]
+
+class ReLU(Activation):
+    """
+    applies the RELU function to each value individually.
+    returns the value if positive, zero if negative.
+    """
+    def forward(self, inputs):
+        # if the value is positive pass it through, if negative return zero
+        return [max(0, input_value) for input_value in inputs]
+
+class Linear(Activation):
+    """
+    passes values through unchanged.
+    used in experiments to demonstrate that a network with no non-linearity
+    collapses to a single linear transformation regardless of depth.
+    """
+    def forward(self, inputs):
+        # returning the values unchanged
+        return inputs.copy()
+
+class OutputFunction:
+    """
+    base class for all output functions in this network.
+    """
+    def forward(self, inputs):
+        pass
+
+class Softmax(OutputFunction):
+    """
+    converts a list of raw values into a distribution.
+    every value will be between 0 and 1 and they will all sum to 1.
+    """
+    def forward(self, inputs):
+        # subtract the max value first so the numbers don't get too big.
+        max_value = max(inputs)
+        exponents = [math.exp(input_value - max_value) for input_value in inputs]
+        total = sum(exponents)
+        return [exponent / total for exponent in exponents]
+
+class LinearOutput(OutputFunction):
+    """
+    passes values through unchanged.
+    this is the alternative output function for experiments.
+    """
+    def forward(self, inputs):
+        # return values unchanged
+        return inputs.copy()
+
+class Model:
+    """
+    holds all the layers and is responsible for running the network.
+    it handles training, prediction, and evaluation.
+    """
+
+    def __init__(self, layers):
+        """
+        layers: a list of Layer objects in order from input to output
+        """
+        self.layers  = layers
+        self.history = {'loss': [], 'accuracy': []}
+
+    def forward(self, inputs):
+        """
+        pass the inputs through every layer in order.
+        the output of each layer becomes the input to the next.
+        returns the final output of the network.
+        """
+        current_values = inputs
+
+        # pass data through each layer in order
+        for layer in self.layers:
+            current_values = layer.forward(current_values)
+
+        return current_values
+
+    def predict(self, inputs):
+        """
+        run a forward pass and return the predicted class index.
+        the predicted class is whichever output node has the highest value.
+        """
+        output_values = self.forward(inputs)
+
+        #find the index of the highest value that is the predicted class
+        return output_values.index(max(output_values))
+
+    def evaluate(self, dataset):
+        """
+        run predict on every example in the dataset.
+        return which were correct as a float between 0 and 1.
+        """
+        correct = 0
+
+        for inputs, label in dataset:
+            #bug test
+            if isinstance(label, list):
+                label = label.index(max(label))
+            if self.predict(inputs) == label:
+                correct += 1
+
+        return correct / len(dataset)
+
+    def describe(self):
+        """
+        prints the structure of the network and the total parameter count.
+        weights and biases both count as parameters.
+        """
+        total_parameters = 0
+
+        for layer in self.layers:
+            # only hidden and output layers have parameters
+            if isinstance(layer, (HiddenLayer, OutputLayer)):
+                layer_parameters = sum(len(node_weights) for node_weights in layer.weights) + len(layer.biases)
+                total_parameters += layer_parameters
+                print(f'layer: {len(layer.biases)} nodes, {layer_parameters} parameters')
+
+        print(f'total parameters: {total_parameters}')
+
+    def fit(self, dataset, epochs, learning_rate):
+        """
+        train the network on the dataset for a given number of epochs.
+        stores loss and accuracy per epoch in self.history.
+        """
+        for epoch in range(epochs):
+            epoch_loss = 0
+            correct = 0
+
+            for inputs, label in dataset:
+                #bug test
+                if isinstance(label, list):
+                    label = label.index(max(label))
+                # run the forward pass once and collect inputs to each layer
+                layer_inputs = [inputs]
+                for layer in self.layers:
+                    layer_inputs.append(layer.forward(layer_inputs[-1]))
+
+                output_values = layer_inputs[-1]
+
+                # calculate the loss for this example
+                loss = -math.log(output_values[label] + 1e-12)
+                epoch_loss += loss
+
+                # check if the prediction was correct
+                if output_values.index(max(output_values)) == label:
+                    correct += 1
+
+                # backward pass updates weights and biases
+                self._backprop(label, layer_inputs, learning_rate)
+
+            # store the average loss and accuracy for this epoch
+            self.history['loss'].append(epoch_loss / len(dataset))
+            self.history['accuracy'].append(correct / len(dataset))
+
+            print(f'epoch {epoch + 1}: loss {epoch_loss / len(dataset):.4f}, accuracy {correct / len(dataset):.4f}')
+
+    def _backprop(self, label, layer_inputs, learning_rate):
+        """
+        update weights and biases using backpropagation.
+        works backwards through the layers computing deltas and applying updates.
+        layer_inputs is collected during the forward pass in fit() and passed in directly.
+        """
+        # compute delta for the output layer
+        output_values = layer_inputs[-1]
+        delta = [output_values[node_index] - (1 if node_index == label else 0) for node_index in
+                 range(len(output_values))]
+
+        # work backwards through hidden and output layers
+        for layer_index in range(len(self.layers) - 1, 0,-1):
+            layer = self.layers[layer_index]
+
+            if isinstance(layer, (HiddenLayer, OutputLayer)):
+                layer_input =layer_inputs[layer_index]
+
+                # save weights before updating needed to compute delta for the layer below
+                saved_weights = [node_weights[:] for node_weights in layer.weights]
+
+                # update weights and biases for each node in this layer
+                for node_index in range(len(layer.weights)):
+                    for weight_index in range(len(layer.weights[node_index])):
+                        layer.weights[node_index][weight_index] -= learning_rate * delta[node_index] * layer_input[weight_index]
+                    layer.biases[node_index] -= learning_rate * delta[node_index]
+
+                # compute delta for the next layer down
+                if layer_index > 1:
+                    previous_layer = self.layers[layer_index - 1]
+                    pre_activation = previous_layer.pre_activation_values
+                    new_delta = []
+
+                    for node_index in range(len(layer_input)):
+                        grad = sum(saved_weights[j][node_index] * delta[j] for j in range(len(delta)))
+                        relu_deriv = 1.0 if pre_activation[node_index] > 0 else 0.0
+                        new_delta.append(grad * relu_deriv)
+
+                    delta = new_delta
+
+def make_network(layer_sizes, activation, output_function):
+    """
+    builds the layers needed to create a model.
+    takes the sizes, activation and output function and returns a list of layers
+    that can be passed straight into Model.
+    """
+    layers = [InputLayer()]
+
+    for layer_index in range(1, len(layer_sizes)):
+        num_inputs = layer_sizes[layer_index - 1]
+        num_nodes  = layer_sizes[layer_index]
+
+        # give each weight a small random value so no two nodes start the same
+        # logic is if all weights were equal the network would never learn
+        weights = [[random.uniform(-0.1, 0.1) for input_index in range(num_inputs)] for node_index in range(num_nodes)]
+
+        # biases start at zero
+        biases = [0.0] * num_nodes
+
+        # the last layer gets the output function, everything else gets the activation
+        if layer_index == len(layer_sizes) - 1:
+            layers.append(OutputLayer(weights, biases, output_function))
+        else:
+            layers.append(HiddenLayer(weights, biases, activation))
+
+    return layers
+
+
+# --- Part D: Experiments ---
+
+# Architecture A: one hidden layer, smaller
+model_a = Model(make_network([784, 64, 10], ReLU(), Softmax()))
+
+# Architecture B: one hidden layer, larger
+model_b = Model(make_network([784, 128, 10], ReLU(), Softmax()))
+
+# Describe both before training.
+# Note down the parameter count for each
+model_a.describe()
+model_b.describe()
+
+# My prediction before training:
+# Model A -- I expect it to train faster due to fewer parameters but reach a lower accuracy
+# Model B -- I expect it to reach a higher accuracy due to more parameters and more capacity
+#            to learn and it might be slower but not significantly
+# more nodes in the hidden layer means it can learn more complex patterns in the data
+
+EPOCHS = 5
+LR = 0.01
+
+# N = len(X_train) = 2000
+# E = EPOCHS = 5
+
+print("--- Model A ---")
+model_a.fit(list(zip(X_train, y_train)), EPOCHS, LR)
+
+print("\n--- Model B ---")
+model_b.fit(list(zip(X_train, y_train)), EPOCHS, LR)
+
+# Evaluate both on the test set.
+acc_a = model_a.evaluate(list(zip(X_test, y_test)))
+acc_b = model_b.evaluate(list(zip(X_test, y_test)))
+print(f"Model A: {acc_a:.3f}   Model B: {acc_b:.3f}")
+
+# Print training history
+def show_history(history, label):
+    print(f"\n{label} — loss per epoch:")
+    for i, loss in enumerate(history):
+        bar = '#' * max(1, int(loss * 20))
+        print(f"  Epoch {i+1:2d}: {bar}  ({loss:.4f})")
+
+show_history(model_a.history['loss'], 'Model A')
+show_history(model_b.history['loss'], 'Model B')
+
+# Reflection:
+# Model B performed as i predicted -- better results and not significantly slower
+#
+# Most of the learning happened in epoch 1 and 2 and a little bit in 3 and then subtly in 4 and 5
+# loss dropped sharply then leveled off
+#
+# what I did here was that i tested one hidden layer but different sizes next I'd like to test
+# multiple hidden layers and compare the results and whether that has a effect on this dataset</code></pre>
+            </details>
+          </section>
+
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -3,190 +3,272 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Page title: replace "Project Title" with this project's name -->
-  <title>Project Title — Your Name</title>
-
-  <!-- Shared stylesheet — do not remove -->
+  <title>Artificial Neuron &mdash; Abdul Mohaimin</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <!-- ============================================================
-       SITE HEADER (identical on every page)
-       ============================================================ -->
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <div class="container">
-      <a href="index.html" class="site-logo">Your Name</a>
-      <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
         <ul>
-          <li><a href="index.html">Work</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
+  <main id="main-content">
 
-  <main>
-    <div class="container">
+    <section class="page-hero" aria-labelledby="project-hero-heading">
+      <div class="container">
+        <span class="label">Project 01 &mdash; Skills Demo 1</span>
+        <h1 id="project-hero-heading">Artificial<br>Neuron</h1>
+        <p>Building a single neuron from scratch &mdash; weighted sum, bias, and ReLU activation implemented in pure Python.</p>
+      </div>
+    </section>
 
+    <article class="section" aria-label="Project documentation">
+      <div class="container">
+        <a href="overview.html" class="back-link">Back to overview</a>
 
-      <!-- ── PROJECT ARTICLE ──────────────────────────────────────
-           <article> correct: a self-contained case study that could
-           be syndicated or read independently of the rest of the site.
-           ──────────────────────────────────────────────────────── -->
-      <article class="project-article">
+        <div class="project-article">
 
+          <section aria-labelledby="purpose-heading">
+            <h2 id="purpose-heading">Purpose &amp; Context</h2>
+            <hr class="rule">
+            <p>
+              This was the first skills demo of the course and the starting point of everything that followed.
+              The goal was to implement the most fundamental unit in any neural network &mdash; a single artificial neuron &mdash;
+              without any libraries. Writing it from scratch made the maths concrete before building anything more complex.
+            </p>
+            <p>
+              A biological neuron fires when it receives enough input. An artificial neuron does the same thing mathematically:
+              it multiplies its input by a weight, adds a bias, and then decides whether to &ldquo;fire&rdquo; using an activation function.
+            </p>
+          </section>
 
-        <!-- ── Back navigation ── -->
-        <a href="index.html" class="back-link">All Projects</a>
+          <section aria-labelledby="concept-heading">
+            <h2 id="concept-heading">Conceptual Explanation</h2>
+            <hr class="rule">
+            <ol class="doc-list">
+              <li>
+                <strong>Weighted sum</strong> &mdash; the input is multiplied by a weight. A larger weight means more influence.
+                Formula: <code>weighted_sum = input &times; weight + bias</code>
+              </li>
+              <li>
+                <strong>Bias</strong> &mdash; a constant added to the weighted sum. Lets the neuron fire even when input is zero.
+              </li>
+              <li>
+                <strong>ReLU</strong> &mdash; if the weighted sum is positive it passes through unchanged; if negative it is clamped to zero.
+              </li>
+            </ol>
 
+            <table class="doc-table" aria-label="ReLU behaviour">
+              <caption>ReLU activation behaviour</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Weighted Sum</th>
+                  <th scope="col">ReLU Output</th>
+                  <th scope="col">Why</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Positive (e.g. 8)</td><td>8</td><td>Passes through unchanged</td></tr>
+                <tr><td>Zero</td><td>0</td><td>Boundary &mdash; neuron does not fire</td></tr>
+                <tr><td>Negative (e.g. &minus;5)</td><td>0</td><td>Clamped to zero</td></tr>
+              </tbody>
+            </table>
+          </section>
 
-        <!-- ── PROJECT HEADER ─────────────────────────────────────
-             <header> correct: the introductory block of this article.
-             Contains the label, title, rule, and tech stack.
-             ──────────────────────────────────────────────────────── -->
-        <header>
+          <section aria-labelledby="implementation-heading">
+            <h2 id="implementation-heading">Key Functions</h2>
+            <hr class="rule">
 
-          <!-- Category label: e.g. "Machine Learning / Vision" -->
-          <span class="label">Category / Discipline</span>
+            <h3 class="code-label">ReLU activation function</h3>
+            <pre><code># Starting by creating a ReLU Function
 
-          <!-- Project title: replace with the name of this project -->
-          <h1>Project Title Here</h1>
+def ReLU(x):
+# if x > 0 return x, else return 0
+  if x > 0:
+    return x
+  else:
+    return 0</code></pre>
 
-          <hr class="rule">
+            <h3 class="code-label">Weighted sum</h3>
+            <pre><code># A neuron Function that computes the weighted sum
 
-          <!-- Technologies used: add or remove <li> tags as needed -->
-          <ul class="tech-stack" aria-label="Technologies used">
-            <li class="tag">Technology One</li>
-            <li class="tag">Technology Two</li>
-            <li class="tag">Technology Three</li>
-          </ul>
+def artificial_neuron(input, weight, bias):
+# The below formula computes said sum then returns the weighted sum
+    weighted_sum = (input * weight + bias)
+    return weighted_sum</code></pre>
 
-          <hr class="rule">
+            <h3 class="code-label">Activated neuron</h3>
+            <pre><code>#Activated Neuron fnction that combines both above functions and implements
+#an activated neuron
 
-        </header>
+def activated_neuron(input, weight, bias ):
+  # calculate the initial output by neuron
+  sum = artificial_neuron(input , weight , bias) # I used operators when i should've used commas (also misspelled parametre which led to error)
 
+  activated_output = ReLU(sum) # this function is applying the reasoning
 
-        <!-- ── SECTION 1: Problem Statement ── -->
-        <section aria-labelledby="problem-heading">
+  return activated_output # this returns the final value</code></pre>
+          </section>
 
-          <h2 id="problem-heading">The Problem</h2>
+          <section aria-labelledby="testing-heading">
+            <h2 id="testing-heading">Testing &amp; Results</h2>
+            <hr class="rule">
 
-          <!-- Problem statement: describe the challenge or question.
-               Changed from <div> to <p> — this is a paragraph of text,
-               not a layout container. <p> is the correct element. -->
-          <p class="placeholder-box">
-            Problem statement placeholder — describe the challenge, gap, or question
-            that motivated this project. What problem were you solving and why does it matter?
-          </p>
+            <table class="doc-table" aria-label="Test results">
+              <caption>Test case results</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Test</th>
+                  <th scope="col">Input</th>
+                  <th scope="col">Weight</th>
+                  <th scope="col">Bias</th>
+                  <th scope="col">Weighted Sum</th>
+                  <th scope="col">Activated Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>3</td><td>&minus;2</td><td>1</td><td>&minus;5</td><td>0 &mdash; ReLU clamps</td></tr>
+                <tr><td>2</td><td>&minus;2</td><td>4</td><td>1</td><td>&minus;7</td><td>0 &mdash; ReLU clamps</td></tr>
+                <tr><td>3</td><td>1</td><td>6</td><td>2</td><td>8</td><td>8 &mdash; passes through</td></tr>
+              </tbody>
+            </table>
 
-        </section>
+            <h3 class="code-label">Actual output</h3>
+            <pre><code>Test Cases--
 
+Test Case: # 1
+Input : 3, weight: -2, bias : 1
+Weighted Sum : -5
+Output : 0
 
-        <!-- ── SECTION 2: Approach / Method ── -->
-        <section aria-labelledby="approach-heading">
+Test Case: # 2
+Input : -2, weight: 4, bias : 1
+Weighted Sum : -7
+Output : 0
 
-          <h2 id="approach-heading">Approach &amp; Method</h2>
+Test Case: # 3
+Input : 1, weight: 6, bias : 2
+Weighted Sum : 8
+Output : 8</code></pre>
+          </section>
 
-          <!-- Approach description: explain methodology and reasoning -->
-          <p class="placeholder-box">
-            Approach placeholder — describe the methodology, algorithms, frameworks, or
-            design decisions you used. Explain why you chose this approach over alternatives.
-          </p>
+          <section aria-labelledby="reflection-heading">
+            <h2 id="reflection-heading">Reflection</h2>
+            <hr class="rule">
+            <p>
+              Building this made the purpose of ReLU much clearer than reading about it. A negative weighted sum means the
+              inputs and weights did not combine strongly enough &mdash; ReLU turns that into a clean zero rather than letting
+              a small negative value propagate and destabilise a larger network.
+            </p>
+            <p>
+              Two bugs appeared during development. The first was using operators instead of commas in the function call.
+              The second was a missing underscore in the function name in a print call, which Python read as a syntax error.
+              Both were caught immediately but they reinforced how precise Python&rsquo;s syntax needs to be.
+            </p>
+            <p>
+              This neuron only handles a single input and a single weight. Real neurons take many inputs simultaneously,
+              each with its own weight &mdash; that extension came in the neural network projects that followed.
+            </p>
+          </section>
 
-        </section>
+          <section aria-labelledby="full-code-heading">
+            <h2 id="full-code-heading">Full Implementation</h2>
+            <hr class="rule">
+            <p>Complete source file as submitted, including all test cases and bug notes.</p>
+            <details class="code-details">
+              <summary class="code-details-summary">Show full code &darr;</summary>
+              <pre><code># -*- coding: utf-8 -*-
+"""Untitled7.ipynb
 
+Automatically generated by Colab.
 
-        <!-- ── SECTION 3: Results / Outcomes ── -->
-        <section aria-labelledby="results-heading">
+Original file is located at
+    https://colab.research.google.com/drive/1Ivss7h56KBIbTyjm8-JCLllxphdshcrU
+"""
 
-          <h2 id="results-heading">Results</h2>
+# Starting by creating a ReLU Function
 
-          <!-- Results: describe what you built, measured, or discovered -->
-          <p class="placeholder-box">
-            Results placeholder — describe the outcome of the project. Include metrics,
-            visualisations, or qualitative findings. What did you actually produce or discover?
-          </p>
+def ReLU(x):
+# if x > 0 return x, else return 0
+  if x > 0:
+    return x
+  else:
+    return 0
 
-        </section>
+# A neuron Function that computes the weighted sum
 
+def artificial_neuron(input, weight, bias):
+# The below formula computes said sum then returns the weighted sum
+    weighted_sum = (input * weight + bias)
+    return weighted_sum
 
-        <!-- ── SECTION 4: What You Learned ── -->
-        <section aria-labelledby="learnings-heading">
+#Activated Neuron fnction that combines both above functions and implements
+#an activated neuron
 
-          <h2 id="learnings-heading">What I Learned</h2>
+def activated_neuron(input, weight, bias ):
+  # calculate the initial output by neuron
+  sum = artificial_neuron(input , weight , bias) # I used operators when i should've used commas (also misspelled parametre which led to error)
 
-          <!-- Learnings: write the most important insight or skill gained -->
-          <p class="placeholder-box">
-            Learnings placeholder — reflect on the most valuable technical or conceptual
-            insight you gained. What would you do differently if you started again?
-          </p>
+  activated_output = ReLU(sum) # this function is applying the reasoning
 
-        </section>
+  return activated_output # this returns the final value
 
+# TEST Cases
+counter = 1
 
-        <!-- ── SECTION 5: Future Improvements ── -->
-        <section aria-labelledby="future-heading">
+print('Test Cases--\n')
 
-          <h2 id="future-heading">Future Improvements</h2>
+print(f'Test Case: # {counter}')
+print('Input : 3, weight: -2, bias : 1 \n')
 
-          <!-- Future work: what would you add or change next? -->
-          <p class="placeholder-box">
-            Future improvements placeholder — describe what you would build next if you had
-            more time. What are the known limitations of the current version?
-          </p>
+print(f'Weighted Sum : {artificial_neuron(3, -2, 1)}')
+print(f'Output : {activated_neuron(3, -2, 1 )}\n')
+#  print('Output : ', activated neuron(3, -2, 1 ))
+#SyntaxError: invalid syntax. Perhaps you forgot a comma? (forgot _ )
 
-        </section>
+counter +=1
 
+print(f'Test Case: # {counter}')
+print('Input : -2, weight: 4, bias : 1 \n')
 
-        <!-- ── SECTION 6: Links ── -->
-        <section aria-labelledby="links-heading">
+print(f'Weighted Sum : {artificial_neuron(-2, 4, 1)}')
+print(f'Output : {activated_neuron(-2, 4, 1)}\n')
 
-          <h2 id="links-heading">Links</h2>
+counter +=1
 
-          <!-- Links: replace # with real URLs. Remove any that are not relevant. -->
-          <ul class="tech-stack">
-            <li><a href="#" class="tag">GitHub Repository</a></li>
-            <li><a href="#" class="tag">Live Demo</a></li>
-            <li><a href="#" class="tag">Paper / Report</a></li>
-          </ul>
+print(f'Test Case: # {counter}')
+print('Input : 1, weight: 6, bias : 2 \n')
 
-        </section>
+print(f'Weighted Sum : {artificial_neuron(1, 6, 2)}')
+print(f'Output : {activated_neuron(1, 6, 2)}\n')</code></pre>
+            </details>
+          </section>
 
+        </div>
+      </div>
+    </article>
 
-        <!-- ── PROJECT FOOTER: navigation to next/prev project ────
-             <footer> correct: closing content of the article.
-             ──────────────────────────────────────────────────────── -->
-        <footer>
-          <hr class="rule">
-          <a href="index.html" class="back-link">Back to all projects</a>
-        </footer>
-
-
-      </article>
-
-
-    </div>
   </main>
 
-
-  <!-- ============================================================
-       SITE FOOTER (identical on every page)
-       ============================================================ -->
-  <footer class="site-footer">
+  <footer class="site-footer" id="site-footer">
     <div class="container">
-      <p class="footer-name">&copy; 2025 Your Name</p>
-      <nav class="footer-links" aria-label="Social links">
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Email</a>
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </footer>
-
 
 </body>
 </html>

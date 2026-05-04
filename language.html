@@ -3,190 +3,549 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Page title: replace "Project Title" with this project's name -->
-  <title>Project Title — Your Name</title>
-
-  <!-- Shared stylesheet — do not remove -->
+  <title>Language Detector &mdash; Abdul Mohaimin</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <!-- ============================================================
-       SITE HEADER (identical on every page)
-       ============================================================ -->
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <div class="container">
-      <a href="index.html" class="site-logo">Your Name</a>
-      <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html" class="site-logo">Abdul Mohaimin</a>
+      <nav class="site-nav" id="main-nav" aria-label="Primary navigation">
         <ul>
-          <li><a href="index.html">Work</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
+  <main id="main-content">
 
-  <main>
-    <div class="container">
+    <section class="page-hero" aria-labelledby="project-hero-heading">
+      <div class="container">
+        <span class="label">Project 02 &mdash; Skills Demo 2</span>
+        <h1 id="project-hero-heading">Language<br>Detector</h1>
+        <p>Classifying text as English, Italian, or Portuguese using word length statistics &mdash; no machine learning, pure statistical distance.</p>
+      </div>
+    </section>
+
+    <article class="section" aria-label="Project documentation">
+      <div class="container">
+        <a href="overview.html" class="back-link">Back to overview</a>
+
+        <div class="project-article">
+
+          <section aria-labelledby="purpose-heading">
+            <h2 id="purpose-heading">Purpose &amp; Context</h2>
+            <hr class="rule">
+            <p>
+              This project was built as part of the Programming Design Principles module. The task was to analyse
+              texts from three educational theorists &mdash; Dewey (English), Montessori (Italian), and Freire (Portuguese) &mdash;
+              and discover whether word length patterns alone could identify a text&rsquo;s language.
+            </p>
+            <p>
+              The insight driving the project is that different languages have different average word lengths. By measuring
+              how closely a sample text&rsquo;s word length distribution matches each reference language, it is possible to
+              classify the sample without understanding any of the words themselves.
+            </p>
+          </section>
+
+          <section aria-labelledby="concept-heading">
+            <h2 id="concept-heading">Conceptual Explanation</h2>
+            <hr class="rule">
+            <p>The classifier works in a pipeline of five steps:</p>
+            <ol class="doc-list">
+              <li><strong>Extract word lengths</strong> &mdash; split the text and measure the length of each word</li>
+              <li><strong>Build a distribution</strong> &mdash; count how many words have each length (1, 2, 3&hellip;)</li>
+              <li><strong>Convert to percentages</strong> &mdash; normalise so texts of different lengths compare fairly</li>
+              <li><strong>Measure distance</strong> &mdash; calculate how different a sample&rsquo;s distribution is from each reference</li>
+              <li><strong>Classify</strong> &mdash; return the language with the smallest distance</li>
+            </ol>
+
+            <aside class="doc-aside" aria-label="Why percentages matter">
+              <h3>Why percentages matter</h3>
+              <p>
+                The most important design decision was normalising raw counts to percentages before comparing.
+                Without this, a longer text would always appear more different from a shorter one due to volume
+                alone &mdash; not because of language. Percentages remove the size effect.
+              </p>
+            </aside>
+          </section>
+
+          <section aria-labelledby="implementation-heading">
+            <h2 id="implementation-heading">Key Functions</h2>
+            <hr class="rule">
+
+            <h3 class="code-label">Step 1 &mdash; Extract word lengths</h3>
+            <pre><code>def get_word_lengths(text):
+    """
+    Extract the length of each word in a text.
+
+    Args:
+        text: String containing the text to analyze
+
+    Returns:
+        List of integers representing word lengths
+    """
+    # Your code here
+    words = text.split(" ")
+    lengths = []
+    for word in words:
+        lengths.append(len(word))
+    return lengths</code></pre>
+
+            <h3 class="code-label">Step 2 &mdash; Build distribution dictionary</h3>
+            <pre><code>def word_length_distribution(text):
+    """
+    Count how many words have each length.
+
+    Args:
+        text: String containing the text to analyze
+
+    Returns:
+        Dictionary mapping length to count, e.g. {1: 3, 2: 5, 3: 8, ...}
+    """
+    # Your code here
+    lengths = get_word_lengths(text)
+    dist = {}
+
+    for length in lengths:
+        if length not in dist:
+            dist [length] = 1
+        else:
+            dist [length] += 1
+    return dist</code></pre>
+
+            <h3 class="code-label">Step 3 &mdash; Compare statistics (basic method)</h3>
+            <pre><code>def compare_statistics(text1, text2):
+    """
+    Calculate distance between two texts using average and median.
+
+    Returns:
+        Float representing distance (smaller = more similar)
+    """
+    # Your code here
+   # 1. get the means,do the difference
+
+    mean_of_text1 = sum(get_word_lengths(text1)) / len(get_word_lengths(text1))
+    mean_of_text2 = sum(get_word_lengths(text2)) / len(get_word_lengths(text2))
+
+    difference_in_averages = mean_of_text1 - mean_of_text2
+
+    # 2. get the median, do the difference
+    # sort data with the list of length, get the index
+    sorted_text1 = sorted(get_word_lengths(text1))
+    sorted_text2 = sorted(get_word_lengths(text2))
+
+    median1 = sorted_text1[len(sorted_text1)//2]
+    median2 = sorted_text2[len(sorted_text2)//2]
+
+    difference_in_median = median1 - median2
+
+    # 3. Add the absolute values of these differences
+    absolute_values = abs(difference_in_median) + abs(difference_in_averages)
+
+    # Return total distance
+    return absolute_values</code></pre>
+
+            <h3 class="code-label">Step 4 &mdash; Mean Squared Error (the better method)</h3>
+            <pre><code>def mean_squared_error(text1, text2):
+    """
+    Calculate MSE between percentage distributions of two texts.
+
+    Returns:
+        Float representing MSE (smaller = more similar)
+    """
+    # Your code here
+    #1. Dictionary for distribution : What's happening:
+    '''
+    Call the percentage_distribution() function on text1
+    Do the same for text2
+    Now we have two dictionaries to compare
+    '''
+
+    data_length1 = percentage_distribution(text1)
+    data_length2 = percentage_distribution(text2)
+
+   # initial count of sum of squared differences
+    total = 0 # Will store the sum of all squared differences
+    count = 0 # will track how many word lengths we compare
 
 
-      <!-- ── PROJECT ARTICLE ──────────────────────────────────────
-           <article> correct: a self-contained case study that could
-           be syndicated or read independently of the rest of the site.
-           ──────────────────────────────────────────────────────── -->
-      <article class="project-article">
+    # loop through each word length present in text 1
+    for length in data_length1:
+        percentage_1 = data_length1[length] # Get the percentage for length 1 from text1
+        percentage_2 = data_length2.get(length , 0)
+        difference_between_percentages = percentage_1 - percentage_2
+        diff_squared = difference_between_percentages ** 2
+        total += diff_squared
+        count += 1
+    # Looping through lengths in text 2 that arent in text 1
+    for length in data_length2:
+        if length not in data_length1:
+            percentage_1 = 0 # this is a bit confusing but idea is : if length is new and not processed in the first loop process it now
+            percentage_2 = data_length2[length]
+            difference_between_percentages = percentage_1 - percentage_2
+            diff_squared = difference_between_percentages ** 2
+            total += diff_squared
+            count += 1
+    mse = total / count
+
+    return mse</code></pre>
+
+            <h3 class="code-label">Step 5 &mdash; Predict language</h3>
+            <pre><code>def predict_language(sample_text, english_ref, italian_ref, portuguese_ref):
+    """
+    Predict the language of a sample text.
+
+    Args:
+        sample_text: Text to classify
+        english_ref: Reference text in English
+        italian_ref: Reference text in Italian
+        portuguese_ref: Reference text in Portuguese
+
+    Returns:
+        String: "English", "Italian", or "Portuguese"
+    """
+    # Your code here
+    '''
+    what are we doing here we're associating the language to its corresponding mse
+    '''
+
+    mse_to_english = mean_squared_error(sample_text, english_ref)
+    mse_to_italian = mean_squared_error(sample_text, italian_ref)
+    mse_to_portuguese = mean_squared_error(sample_text, portuguese_ref)
+
+    # next I will create an if statement that conditionalises what text to classify
+    # as what based on distance using the mean squared error
+
+    if mse_to_english &lt; mse_to_italian and mse_to_english &lt; mse_to_portuguese:
+        predicted_language = 'English'
+    elif mse_to_italian &lt; mse_to_english and mse_to_italian &lt; mse_to_portuguese: # reading this back i could've shortened this but logic is clearer this way
+        predicted_language = 'Italian'
+    else:
+        predicted_language = 'Portuguese'
+
+    return predicted_language</code></pre>
+          </section>
+
+          <section aria-labelledby="results-heading">
+            <h2 id="results-heading">Results</h2>
+            <hr class="rule">
+
+            <table class="doc-table" aria-label="Distance between language pairs">
+              <caption>Distance between language pairs &mdash; both methods compared</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Language Pair</th>
+                  <th scope="col">compare_statistics</th>
+                  <th scope="col">Mean Squared Error</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>English vs Italian</td>
+                  <td>5.25</td>
+                  <td>87.45</td>
+                  <td>&mdash;</td>
+                </tr>
+                <tr>
+                  <td>English vs Portuguese</td>
+                  <td>0.44</td>
+                  <td>4.35</td>
+                  <td>Hardest to distinguish</td>
+                </tr>
+                <tr>
+                  <td>Italian vs Portuguese</td>
+                  <td>5.70</td>
+                  <td>83.90</td>
+                  <td>Easiest to distinguish</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="doc-table" aria-label="Minimum sample size testing">
+              <caption>Minimum sample size for correct English classification</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Sample Size (characters)</th>
+                  <th scope="col">Prediction</th>
+                  <th scope="col">Correct?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>10</td><td>Portuguese</td><td>&#10007; No</td></tr>
+                <tr><td>50</td><td>Portuguese</td><td>&#10007; No</td></tr>
+                <tr><td>100</td><td>Portuguese</td><td>&#10007; No</td></tr>
+                <tr><td>500</td><td>English</td><td>&#10003; Yes</td></tr>
+                <tr><td>10,000</td><td>English</td><td>&#10003; Yes</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section aria-labelledby="reflection-heading">
+            <h2 id="reflection-heading">Reflection</h2>
+            <hr class="rule">
+            <p>
+              One thing that surprised us was that word length alone could be used to identify a language at all.
+              We expected languages to feel very different but did not expect that difference to show up so clearly
+              in something as simple as how long the words are. The most important design decision we made was
+              converting the raw word counts into percentages before comparing texts &mdash; without this a longer
+              text could always appear more different from a shorter one just because of its size, not language.
+            </p>
+            <p>
+              The hardest pair to distinguish was English and Portuguese, with a compare_statistics distance of only 0.44.
+              The easiest was Italian and Portuguese at 5.70 &mdash; counterintuitive since they are both Romance languages.
+            </p>
+            <p>
+              The main limitation is that the predictor requires at least 500 characters to classify reliably and only
+              works for the three languages it was trained on. It may also have learned each specific author&rsquo;s
+              writing style rather than the language itself, since only one text per language was used as a reference.
+              Adding more reference texts per language would reduce this risk.
+            </p>
+          </section>
+
+          <section aria-labelledby="full-code-heading">
+            <h2 id="full-code-heading">Full Implementation</h2>
+            <hr class="rule">
+            <p>All functions from the notebook in submission order, including pseudocode comments.</p>
+            <details class="code-details">
+              <summary class="code-details-summary">Show full code &darr;</summary>
+              <pre><code>"""
+Write your pseudocode here
+
+first I am going to create a function that extracts the length of each word in a text
+to do that i will create an empty list : length_of_characters
+
+split the text into a list of words
+for each word in list of texts
+compute the length using len
+append the length to the list
+return the list of length of texts
+"""
+
+def get_word_lengths(text):
+    words = text.split(" ")
+    lengths = []
+    for word in words:
+        lengths.append(len(word))
+    return lengths
+
+"""
+Write your pseudocode here
+
+Call get_word_length(text) to get all words lengths
+create an empty dictionary called dist
+for each length in list :
+if the length is not in dictionary add it with count 1
+otherwise increment its existing count
+return dictionary
+"""
+
+def word_length_distribution(text):
+    lengths = get_word_lengths(text)
+    dist = {}
+
+    for length in lengths:
+        if length not in dist:
+            dist [length] = 1
+        else:
+            dist [length] += 1
+    return dist
+
+# percentage_distribution converts the raw counts to percentages
+def percentage_distribution(text):
+    dist = word_length_distribution(text)
+    total = sum(dist.values())
+    return {length: (count / total) * 100 for length, count in dist.items()}
+
+"""
+write your pseudocode here
+
+create a function that gets the mean for the texts
+
+we are creating a function called compare statistics
+Get the list of word lengths from text1
+Add all the word lengths together
+Divide by the number of words to get mean_of_text1
+
+Repeat the same process for text2 to get mean_of_text2
+
+Calculate the difference between the two means
+Store this in difference_in_averages
+
+Calculate the median word length for both texts
+Get the list of word lengths from text1
+Sort this list in ascending order
+Find the middle position by dividing the length by 2
+Get the value at this middle position
+
+Repeat the same process for text2 to get median2
+
+Calculate the difference between the two medians
+Store this in difference_in_median
+Calculate the total distance
+Take the absolute value of difference_in_median
+Take the absolute value of difference_in_averages
+Add these two absolute values together
+Store the result in absolute_values
+
+Return absolute_values
+"""
+
+def compare_statistics(text1, text2):
+   # 1. get the means, do the difference
+    mean_of_text1 = sum(get_word_lengths(text1)) / len(get_word_lengths(text1))
+    mean_of_text2 = sum(get_word_lengths(text2)) / len(get_word_lengths(text2))
+
+    difference_in_averages = mean_of_text1 - mean_of_text2
+
+    # 2. get the median, do the difference
+    sorted_text1 = sorted(get_word_lengths(text1))
+    sorted_text2 = sorted(get_word_lengths(text2))
+
+    median1 = sorted_text1[len(sorted_text1)//2]
+    median2 = sorted_text2[len(sorted_text2)//2]
+
+    difference_in_median = median1 - median2
+
+    # 3. Add the absolute values of these differences
+    absolute_values = abs(difference_in_median) + abs(difference_in_averages)
+
+    return absolute_values
+
+# ---
+# this was the first version of the code i created with sally and yaroslav in class
+# as i looked over this code i realised its readability was a bit poor
+# the main issue was the accuracy of the for loops result for testing
+# the function goes through text1 but does not account for text 2 items that arent in text 1
+# also variables werent defined correctly such as the total / n : n is not defined
+#
+# i have found a built in function called set union but find implementing it a little confusing
+# so i will be using 2 for loops instead
+#
+# i just realised why my dict was giving me an error its because i was using () instead of []
+# as () calls it as a function
+# ---
+
+def mean_squared_error(text1, text2):
+    data_length1 = percentage_distribution(text1)
+    data_length2 = percentage_distribution(text2)
+
+    total = 0 # Will store the sum of all squared differences
+    count = 0 # will track how many word lengths we compare
+
+    # loop through each word length present in text 1
+    for length in data_length1:
+        percentage_1 = data_length1[length]
+        percentage_2 = data_length2.get(length , 0)
+        difference_between_percentages = percentage_1 - percentage_2
+        diff_squared = difference_between_percentages ** 2
+        total += diff_squared
+        count += 1
+    # Looping through lengths in text 2 that arent in text 1
+    for length in data_length2:
+        if length not in data_length1:
+            percentage_1 = 0 # this is a bit confusing but idea is : if length is new and not processed in the first loop process it now
+            percentage_2 = data_length2[length]
+            difference_between_percentages = percentage_1 - percentage_2
+            diff_squared = difference_between_percentages ** 2
+            total += diff_squared
+            count += 1
+    mse = total / count
+
+    return mse
+
+def predict_language(sample_text, english_ref, italian_ref, portuguese_ref):
+    '''
+    what are we doing here we're associating the language to its corresponding mse
+    '''
+
+    mse_to_english = mean_squared_error(sample_text, english_ref)
+    mse_to_italian = mean_squared_error(sample_text, italian_ref)
+    mse_to_portuguese = mean_squared_error(sample_text, portuguese_ref)
+
+    if mse_to_english &lt; mse_to_italian and mse_to_english &lt; mse_to_portuguese:
+        predicted_language = 'English'
+    elif mse_to_italian &lt; mse_to_english and mse_to_italian &lt; mse_to_portuguese: # reading this back i could've shortened this but logic is clearer this way
+        predicted_language = 'Italian'
+    else:
+        predicted_language = 'Portuguese'
+
+    return predicted_language
 
 
-        <!-- ── Back navigation ── -->
-        <a href="index.html" class="back-link">All Projects</a>
+# --- Group evaluation tests ---
 
+# Test 1: English sample (1000 characters)
+english_sample = dewey_text[50000:51000]
+result_english = predict_language(english_sample, dewey_text, montessori_text, freire_text)
+print(f"Predicted language: {result_english}")
+# Correct!
 
-        <!-- ── PROJECT HEADER ─────────────────────────────────────
-             <header> correct: the introductory block of this article.
-             Contains the label, title, rule, and tech stack.
-             ──────────────────────────────────────────────────────── -->
-        <header>
+# Test 2: Italian sample (1000 characters)
+italian_sample = montessori_text[50000:51000]
+result_italian = predict_language(italian_sample, dewey_text, montessori_text, freire_text)
+print(f"Predicted language: {result_italian}")
+# Correct!
 
-          <!-- Category label: e.g. "Machine Learning / Vision" -->
-          <span class="label">Category / Discipline</span>
+# Minimum sample size tests
+english_sample = dewey_text[50000:50010]
+print("Test 1: English sample (10 characters)")
+result_english = predict_language(english_sample, dewey_text, montessori_text, freire_text)
+print(f"Predicted language: {result_english}")
+print('10 Words does not work\n')
 
-          <!-- Project title: replace with the name of this project -->
-          <h1>Project Title Here</h1>
+english_sample = dewey_text[50000:50050]
+print("Test 2: English sample (50 characters)")
+result_english = predict_language(english_sample, dewey_text, montessori_text, freire_text)
+print(f"Predicted language: {result_english}")
+print('50 Words does not work\n')
 
-          <hr class="rule">
+english_sample = dewey_text[50000:50500]
+print("Test 4: English sample (500 characters)")
+result_english = predict_language(english_sample, dewey_text, montessori_text, freire_text)
+print(f"Predicted language: {result_english}")
+print('500 Words does work!\n')
 
-          <!-- Technologies used: add or remove <li> tags as needed -->
-          <ul class="tech-stack" aria-label="Technologies used">
-            <li class="tag">Technology One</li>
-            <li class="tag">Technology Two</li>
-            <li class="tag">Technology Three</li>
-          </ul>
+# Compare distances between language pairs
+distance_eng_ita = compare_statistics(dewey_text, montessori_text)
+distance_eng_por = compare_statistics(dewey_text, freire_text)
+distance_ita_por = compare_statistics(montessori_text, freire_text)
 
-          <hr class="rule">
+print(f"English vs Italian:    {distance_eng_ita}")
+print(f"English vs Portuguese: {distance_eng_por}")
+print(f"Italian vs Portuguese: {distance_ita_por}\n")
 
-        </header>
+print("English vs Portuguese is hardest to distinguish")
 
+# MSE comparison
+print("MSE method (mean_squared_error):")
+print(f"English vs Italian:    {mean_squared_error(dewey_text, montessori_text)}")
+print(f"English vs Portuguese: {mean_squared_error(dewey_text, freire_text)}")
+print(f"Italian vs Portuguese: {mean_squared_error(montessori_text, freire_text)}")</code></pre>
+            </details>
+          </section>
 
-        <!-- ── SECTION 1: Problem Statement ── -->
-        <section aria-labelledby="problem-heading">
+        </div>
+      </div>
+    </article>
 
-          <h2 id="problem-heading">The Problem</h2>
-
-          <!-- Problem statement: describe the challenge or question.
-               Changed from <div> to <p> — this is a paragraph of text,
-               not a layout container. <p> is the correct element. -->
-          <p class="placeholder-box">
-            Problem statement placeholder — describe the challenge, gap, or question
-            that motivated this project. What problem were you solving and why does it matter?
-          </p>
-
-        </section>
-
-
-        <!-- ── SECTION 2: Approach / Method ── -->
-        <section aria-labelledby="approach-heading">
-
-          <h2 id="approach-heading">Approach &amp; Method</h2>
-
-          <!-- Approach description: explain methodology and reasoning -->
-          <p class="placeholder-box">
-            Approach placeholder — describe the methodology, algorithms, frameworks, or
-            design decisions you used. Explain why you chose this approach over alternatives.
-          </p>
-
-        </section>
-
-
-        <!-- ── SECTION 3: Results / Outcomes ── -->
-        <section aria-labelledby="results-heading">
-
-          <h2 id="results-heading">Results</h2>
-
-          <!-- Results: describe what you built, measured, or discovered -->
-          <p class="placeholder-box">
-            Results placeholder — describe the outcome of the project. Include metrics,
-            visualisations, or qualitative findings. What did you actually produce or discover?
-          </p>
-
-        </section>
-
-
-        <!-- ── SECTION 4: What You Learned ── -->
-        <section aria-labelledby="learnings-heading">
-
-          <h2 id="learnings-heading">What I Learned</h2>
-
-          <!-- Learnings: write the most important insight or skill gained -->
-          <p class="placeholder-box">
-            Learnings placeholder — reflect on the most valuable technical or conceptual
-            insight you gained. What would you do differently if you started again?
-          </p>
-
-        </section>
-
-
-        <!-- ── SECTION 5: Future Improvements ── -->
-        <section aria-labelledby="future-heading">
-
-          <h2 id="future-heading">Future Improvements</h2>
-
-          <!-- Future work: what would you add or change next? -->
-          <p class="placeholder-box">
-            Future improvements placeholder — describe what you would build next if you had
-            more time. What are the known limitations of the current version?
-          </p>
-
-        </section>
-
-
-        <!-- ── SECTION 6: Links ── -->
-        <section aria-labelledby="links-heading">
-
-          <h2 id="links-heading">Links</h2>
-
-          <!-- Links: replace # with real URLs. Remove any that are not relevant. -->
-          <ul class="tech-stack">
-            <li><a href="#" class="tag">GitHub Repository</a></li>
-            <li><a href="#" class="tag">Live Demo</a></li>
-            <li><a href="#" class="tag">Paper / Report</a></li>
-          </ul>
-
-        </section>
-
-
-        <!-- ── PROJECT FOOTER: navigation to next/prev project ────
-             <footer> correct: closing content of the article.
-             ──────────────────────────────────────────────────────── -->
-        <footer>
-          <hr class="rule">
-          <a href="index.html" class="back-link">Back to all projects</a>
-        </footer>
-
-
-      </article>
-
-
-    </div>
   </main>
 
-
-  <!-- ============================================================
-       SITE FOOTER (identical on every page)
-       ============================================================ -->
-  <footer class="site-footer">
+  <footer class="site-footer" id="site-footer">
     <div class="container">
-      <p class="footer-name">&copy; 2025 Your Name</p>
-      <nav class="footer-links" aria-label="Social links">
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Email</a>
+      <p class="footer-name">&copy; 2026 Abdul Mohaimin</p>
+      <nav class="footer-links" aria-label="External profiles">
+        <a href="https://github.com/abdulm20" target="_blank" rel="noopener">GitHub</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </footer>
-
 
 </body>
 </html>
